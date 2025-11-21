@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.ScheduleManagementController"
+      spacing="25" styleClass="content-area">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox HBox.hgrow="ALWAYS">
+            <Label text="Schedule Management" styleClass="title"/>
+            <Label text="Manage train schedules and timings" styleClass="subtitle"/>
+        </VBox>
+        <Button text="➕ Add New Schedule" styleClass="primary-button"
+                onAction="#handleAddSchedule"/>
+    </HBox>
+
+    <!-- Filters Card -->
+    <VBox styleClass="data-card" spacing="20">
+        <Label text="Search Filters" styleClass="card-title"/>
+
+        <!-- Search -->
+        <HBox styleClass="input-container" spacing="10">
+            <Label text="🔍" styleClass="input-icon"/>
+            <TextField fx:id="searchField"
+                       promptText="Search by train number or route..."
+                       styleClass="text-field"
+                       HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <!-- Filters -->
+        <GridPane hgap="15" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33.33"/>
+                <ColumnConstraints percentWidth="33.33"/>
+                <ColumnConstraints percentWidth="33.33"/>
+            </columnConstraints>
+
+            <!-- Train Filter -->
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="Train" styleClass="field-label"/>
+                <ComboBox fx:id="trainFilterCombo" maxWidth="Infinity" styleClass="combo-box">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Trains"/>
+                            <String fx:value="Karachi Express"/>
+                            <String fx:value="Lahore Express"/>
+                            <String fx:value="Green Line"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <!-- Day Filter -->
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="Day" styleClass="field-label"/>
+                <ComboBox fx:id="dayFilterCombo" maxWidth="Infinity" styleClass="combo-box">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Days"/>
+                            <String fx:value="Monday"/>
+                            <String fx:value="Tuesday"/>
+                            <String fx:value="Wednesday"/>
+                            <String fx:value="Thursday"/>
+                            <String fx:value="Friday"/>
+                            <String fx:value="Saturday"/>
+                            <String fx:value="Sunday"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <!-- Status Filter -->
+            <VBox spacing="8" GridPane.columnIndex="2">
+                <Label text="Status" styleClass="field-label"/>
+                <ComboBox fx:id="statusFilterCombo" maxWidth="Infinity" styleClass="combo-box">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Status"/>
+                            <String fx:value="Active"/>
+                            <String fx:value="Inactive"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Schedule Table -->
+    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="Schedule List" styleClass="card-title" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="countLabel" text="Showing 8 schedules" styleClass="small-text"/>
+        </HBox>
+
+        <TableView fx:id="scheduleTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn text="Train Number" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trainNumber"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Train Name" prefWidth="150">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trainName"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Departure" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="departureTime"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Arrival" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="arrivalTime"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Route" prefWidth="200">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="route"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Days" prefWidth="150">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="days"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Status" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="status"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Actions" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

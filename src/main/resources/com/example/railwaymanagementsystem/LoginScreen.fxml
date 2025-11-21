@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.railwaymanagementsystem.controllers.LoginController"
+            styleClass="root-container">
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="transparent-scrollpane">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="30" maxWidth="500">
+                    <HBox>
+                        <Button text="← Back to Role Selection" styleClass="ghost-button"
+                                onAction="#handleBack"/>
+                    </HBox>
+
+                    <VBox alignment="CENTER" spacing="15">
+                        <StackPane styleClass="icon-container">
+                            <Label text="🚂" styleClass="icon-medium"/>
+                        </StackPane>
+
+                        <VBox alignment="CENTER" spacing="5">
+                            <Label text="Welcome Back" styleClass="title"/>
+                            <Label fx:id="roleLabel" text="Sign in as Passenger" styleClass="subtitle"/>
+                        </VBox>
+                    </VBox>
+
+                    <VBox styleClass="form-card" spacing="20">
+                        <VBox spacing="5">
+                            <Label text="Login" styleClass="card-title"/>
+                            <Label text="Enter your credentials to continue" styleClass="card-description"/>
+                        </VBox>
+
+                        <VBox spacing="15">
+                            <VBox spacing="8">
+                                <Label text="Email" styleClass="field-label"/>
+                                <HBox styleClass="input-container" spacing="10">
+                                    <Label text="📧" styleClass="input-icon"/>
+                                    <TextField fx:id="emailField"
+                                               promptText="your.email@example.com"
+                                               styleClass="text-field"
+                                               HBox.hgrow="ALWAYS"/>
+                                </HBox>
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <Label text="Password" styleClass="field-label"/>
+                                <HBox styleClass="input-container" spacing="10">
+                                    <Label text="🔒" styleClass="input-icon"/>
+                                    <PasswordField fx:id="passwordField"
+                                                   promptText="••••••••"
+                                                   styleClass="text-field"
+                                                   HBox.hgrow="ALWAYS"/>
+                                </HBox>
+                            </VBox>
+
+                            <Button text="Sign In" styleClass="primary-button"
+                                    onAction="#handleLogin" maxWidth="Infinity"/>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="10">
+                            <Label fx:id="signupPrompt" text="Don't have an account?"
+                                   styleClass="footer-link-label"/>
+                            <Button fx:id="signupButton" text="Sign Up"
+                                    styleClass="link-button" onAction="#handleSignUp"/>
+                            <Label fx:id="adminNote" text="Admin accounts are provisioned by system administrators"
+                                   styleClass="small-text" wrapText="true" textAlignment="CENTER"
+                                   visible="false" managed="false"/>
+                        </VBox>
+                    </VBox>
+
+                    <VBox styleClass="info-card" spacing="5">
+                        <Label text="Demo: Use any email and password to login"
+                               styleClass="info-text" textAlignment="CENTER" wrapText="true"/>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+</BorderPane>

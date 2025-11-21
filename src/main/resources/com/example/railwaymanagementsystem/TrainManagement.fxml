@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.TrainManagementController"
+      spacing="25" styleClass="content-area">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox HBox.hgrow="ALWAYS">
+            <Label text="Train Management" styleClass="title"/>
+            <Label text="Manage your railway fleet efficiently" styleClass="subtitle"/>
+        </VBox>
+        <Button text="➕ Add New Train" styleClass="primary-button"
+                onAction="#handleAddTrain"/>
+    </HBox>
+
+    <!-- Search and Filters Card -->
+    <VBox styleClass="data-card" spacing="20">
+        <Label text="Search  Filters" styleClass="card-title"/>
+
+        <!-- Search Bar -->
+        <HBox styleClass="input-container" spacing="10">
+            <Label text="🔍" styleClass="input-icon"/>
+            <TextField fx:id="searchField"
+                       promptText="Search by train number, name, or route..."
+                       styleClass="text-field"
+                       HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <!-- Filters -->
+        <GridPane hgap="15" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33.33"/>
+                <ColumnConstraints percentWidth="33.33"/>
+                <ColumnConstraints percentWidth="33.33"/>
+            </columnConstraints>
+
+            <!-- Status Filter -->
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="Status" styleClass="field-label"/>
+                <ComboBox fx:id="statusFilterCombo" maxWidth="Infinity" styleClass="combo-box">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Status"/>
+                            <String fx:value="On-time"/>
+                            <String fx:value="Delayed"/>
+                            <String fx:value="Cancelled"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <!-- Type Filter -->
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="Train Type" styleClass="field-label"/>
+                <ComboBox fx:id="typeFilterCombo" maxWidth="Infinity" styleClass="combo-box">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Types"/>
+                            <String fx:value="Express"/>
+                            <String fx:value="Passenger"/>
+                            <String fx:value="Freight"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <!-- Route Filter -->
+            <VBox spacing="8" GridPane.columnIndex="2">
+                <Label text="Route" styleClass="field-label"/>
+                <ComboBox fx:id="routeFilterCombo" maxWidth="Infinity" styleClass="combo-box">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Routes"/>
+                            <String fx:value="Karachi"/>
+                            <String fx:value="Lahore"/>
+                            <String fx:value="Islamabad"/>
+                            <String fx:value="Peshawar"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Train Table Card -->
+    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="Train List" styleClass="card-title" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="countLabel" text="Showing 6 of 6 trains" styleClass="small-text"/>
+        </HBox>
+
+        <!-- Table -->
+        <TableView fx:id="trainTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn text="Train Number" prefWidth="120">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trainNumber"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Train Name" prefWidth="180">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="trainName"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Type" prefWidth="120">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="type"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Route" prefWidth="250">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="route"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Status" prefWidth="120">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="status"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.SettingsController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT">
+        <VBox>
+            <Label text="Settings" styleClass="title"/>
+            <Label text="Configure system preferences and settings" styleClass="subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- General Settings -->
+    <VBox styleClass="data-card" spacing="20">
+        <Label text="General Settings" styleClass="card-title"/>
+
+        <GridPane hgap="15" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="System Name" styleClass="field-label"/>
+                <TextField fx:id="systemNameField" text="Rail Safar"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="Language" styleClass="field-label"/>
+                <ComboBox fx:id="languageCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="English"/>
+                            <String fx:value="Urdu"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Time Zone" styleClass="field-label"/>
+                <ComboBox fx:id="timezoneCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="PKT (UTC+5)"/>
+                            <String fx:value="IST (UTC+5:30)"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Date Format" styleClass="field-label"/>
+                <ComboBox fx:id="dateFormatCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="DD/MM/YYYY"/>
+                            <String fx:value="MM/DD/YYYY"/>
+                            <String fx:value="YYYY-MM-DD"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Booking Settings -->
+    <VBox styleClass="data-card" spacing="20">
+        <Label text="Booking Settings" styleClass="card-title"/>
+
+        <GridPane hgap="15" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="Max Booking Days in Advance" styleClass="field-label"/>
+                <Spinner fx:id="maxBookingDaysSpinner" initialValue="60" min="1" max="365" editable="true"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="Max Seats Per Booking" styleClass="field-label"/>
+                <Spinner fx:id="maxSeatsSpinner" initialValue="6" min="1" max="20" editable="true"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Cancellation Deadline (hours before)" styleClass="field-label"/>
+                <Spinner fx:id="cancellationDeadlineSpinner" initialValue="24" min="1" max="72" editable="true"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Default Seat Class" styleClass="field-label"/>
+                <ComboBox fx:id="defaultSeatClassCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Economy"/>
+                            <String fx:value="Business"/>
+                            <String fx:value="First Class"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Notification Settings -->
+    <VBox styleClass="data-card" spacing="15">
+        <Label text="Notification Settings" styleClass="card-title"/>
+
+        <CheckBox fx:id="emailNotificationsCheck" text="Enable Email Notifications" selected="true"/>
+        <CheckBox fx:id="smsNotificationsCheck" text="Enable SMS Notifications" selected="true"/>
+        <CheckBox fx:id="delayNotificationsCheck" text="Notify passengers about delays" selected="true"/>
+        <CheckBox fx:id="cancellationNotificationsCheck" text="Notify passengers about cancellations" selected="true"/>
+    </VBox>
+
+    <!-- Database Settings -->
+    <VBox styleClass="data-card" spacing="15">
+        <Label text="Database Settings" styleClass="card-title"/>
+
+        <GridPane hgap="15" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="Database Host" styleClass="field-label"/>
+                <TextField fx:id="dbHostField" text="localhost"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="Database Port" styleClass="field-label"/>
+                <TextField fx:id="dbPortField" text="5432"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Database Name" styleClass="field-label"/>
+                <TextField fx:id="dbNameField" text="railsafar"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Button text="🔌 Test Connection" styleClass="secondary-button"
+                            onAction="#handleTestConnection"/>
+                    <Button text="💾 Backup Database" styleClass="secondary-button"
+                            onAction="#handleBackupDatabase"/>
+                </HBox>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Save Button -->
+    <HBox spacing="15">
+        <Button text="💾 Save Settings" styleClass="primary-button"
+                onAction="#handleSaveSettings"/>
+        <Button text="↺ Reset to Defaults" styleClass="secondary-button"
+                onAction="#handleResetSettings"/>
+    </HBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

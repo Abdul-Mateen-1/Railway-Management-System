@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.UserManagementController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox HBox.hgrow="ALWAYS">
+            <Label text="User Management" styleClass="title"/>
+            <Label text="Manage system users and permissions" styleClass="subtitle"/>
+        </VBox>
+        <Button text="➕ Add New User" styleClass="primary-button"
+                onAction="#handleAddUser"/>
+    </HBox>
+
+    <!-- Search and Filters -->
+    <VBox styleClass="data-card" spacing="20">
+        <Label text="Search and Filters" styleClass="card-title"/>
+
+        <HBox styleClass="input-container" spacing="10">
+            <Label text="🔍" styleClass="input-icon"/>
+            <TextField fx:id="searchField"
+                       promptText="Search by name or email..."
+                       styleClass="text-field"
+                       HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <GridPane hgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="Role" styleClass="field-label"/>
+                <ComboBox fx:id="roleFilterCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Roles"/>
+                            <String fx:value="Admin"/>
+                            <String fx:value="Passenger"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="Status" styleClass="field-label"/>
+                <ComboBox fx:id="statusFilterCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Status"/>
+                            <String fx:value="Active"/>
+                            <String fx:value="Inactive"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Users Table -->
+    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="User List" styleClass="card-title" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="countLabel" text="Showing 10 users" styleClass="small-text"/>
+        </HBox>
+
+        <TableView fx:id="userTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn text="ID" prefWidth="60">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Name" prefWidth="180">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="name"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Email" prefWidth="220">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="email"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Phone" prefWidth="140">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="phone"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Role" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="role"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Status" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="status"/>
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn text="Actions" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

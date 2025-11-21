@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.CheckTrainStatusController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT">
+        <VBox>
+            <Label text="Check Train Status" styleClass="title"/>
+            <Label text="Track your train in real-time" styleClass="subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- Search Form -->
+    <VBox styleClass="data-card" spacing="20">
+        <Label text="Enter Train Details" styleClass="card-title"/>
+
+        <VBox spacing="8">
+            <Label text="Train Number or PNR" styleClass="field-label"/>
+            <HBox spacing="10">
+                <TextField fx:id="searchField" promptText="Enter train number (e.g., 1UP) or PNR"
+                           HBox.hgrow="ALWAYS"/>
+                <Button text="🔍 Check Status" styleClass="primary-button"
+                        onAction="#handleCheckStatus"/>
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <!-- Status Display -->
+    <VBox fx:id="statusContainer" styleClass="data-card" spacing="20" visible="false">
+        <Label text="Train Status" styleClass="card-title"/>
+
+        <GridPane hgap="20" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="30"/>
+                <ColumnConstraints percentWidth="70"/>
+            </columnConstraints>
+
+            <Label text="Train:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="trainInfoLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Route:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id="routeLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Scheduled Time:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label fx:id="scheduledTimeLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Label text="Current Status:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Label fx:id="statusLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                   style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+
+            <Label text="Current Location:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <Label fx:id="locationLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+            <Label text="Expected Arrival:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <Label fx:id="arrivalLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        </GridPane>
+    </VBox>
+
+    <!-- Recent Searches -->
+    <VBox styleClass="data-card" spacing="10">
+        <Label text="Quick Access" styleClass="card-title"/>
+        <HBox spacing="10">
+            <Button text="1UP - Karachi Express" styleClass="secondary-button"
+                    onAction="#checkTrain1UP"/>
+            <Button text="2DN - Lahore Express" styleClass="secondary-button"
+                    onAction="#checkTrain2DN"/>
+            <Button text="3UP - Green Line" styleClass="secondary-button"
+                    onAction="#checkTrain3UP"/>
+        </HBox>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

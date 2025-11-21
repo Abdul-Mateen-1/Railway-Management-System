@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.railwaymanagementsystem.controllers.SignUpController"
+            styleClass="root-container">
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="transparent-scrollpane">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="20" maxWidth="500">
+                    <HBox>
+                        <Button text="← Back to Login" styleClass="ghost-button"
+                                onAction="#handleBack"/>
+                    </HBox>
+
+                    <VBox alignment="CENTER" spacing="15">
+                        <StackPane styleClass="icon-container">
+                            <Label text="🚂" styleClass="icon-medium"/>
+                        </StackPane>
+
+                        <VBox alignment="CENTER" spacing="5">
+                            <Label text="Create Account" styleClass="title"/>
+                            <Label text="Join Rail Safar today" styleClass="subtitle"/>
+                        </VBox>
+                    </VBox>
+
+                    <VBox styleClass="form-card" spacing="20">
+                        <VBox spacing="5">
+                            <Label text="Sign Up" styleClass="card-title"/>
+                            <Label text="Enter your details to create an account" styleClass="card-description"/>
+                        </VBox>
+
+                        <VBox spacing="15">
+                            <VBox spacing="8">
+                                <HBox styleClass="input-container" spacing="10">
+                                <Label text="Full Name" styleClass="field-label"/>
+                                <TextField fx:id="nameField"
+                                           promptText="John Doe"
+                                           styleClass="text-field"/>
+                                </HBox>
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <HBox styleClass="input-container" spacing="10">
+                                <Label text="Email" styleClass="field-label"/>
+                                <TextField fx:id="emailField"
+                                           promptText="your.email@example.com"
+                                           styleClass="text-field"/>
+                                </HBox>
+                            </VBox>
+
+                            <VBox spacing="5">
+                                <HBox styleClass="input-container" spacing="10">
+                                <Label text="Phone Number" styleClass="field-label"/>
+                                <TextField fx:id="phoneField"
+                                           promptText="+92 300 1234567"
+                                           styleClass="text-field"/>
+                                </HBox>
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <HBox styleClass="input-container" spacing="10">
+                                <Label text="Password" styleClass="field-label"/>
+                                <PasswordField fx:id="passwordField"
+                                               promptText="••••••••"
+                                               styleClass="text-field"/>
+                                </HBox>
+                            </VBox>
+
+                            <Button text="Create Account" styleClass="primary-button"
+                                    onAction="#handleSignUp" maxWidth="Infinity"/>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="10">
+                            <Label text="Already have an account?" styleClass="footer-link-label"/>
+                            <Button text="Sign In" styleClass="link-button" onAction="#handleLogin"/>
+                        </VBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <padding>
+        <Insets top="20" right="40" bottom="20" left="40"/>
+    </padding>
+</BorderPane>
