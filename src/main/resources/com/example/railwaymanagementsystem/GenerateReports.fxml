@@ -4,135 +4,139 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <?import java.lang.String?>
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.railwaymanagementsystem.controllers.GenerateReportsController"
-      spacing="25" styleClass="content-area">
 
-    <HBox alignment="CENTER_LEFT">
-        <VBox>
-            <Label text="Generate Reports" styleClass="title"/>
-            <Label text="Create comprehensive railway analytics reports" styleClass="subtitle"/>
-        </VBox>
-    </HBox>
+<ScrollPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.railwaymanagementsystem.controllers.GenerateReportsController"
+            styleClass="transparent-scrollpane" fitToWidth="true" fitToHeight="true">
 
-    <!-- Report Type Selection -->
-    <VBox styleClass="data-card" spacing="20">
-        <Label text="Select Report Type" styleClass="card-title"/>
+    <VBox spacing="25" styleClass="content-area">
 
-        <GridPane hgap="15" vgap="15">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"/>
-                <ColumnConstraints percentWidth="50"/>
-            </columnConstraints>
-
-            <VBox styleClass="role-card" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Label text="📊 Revenue Report" styleClass="role-title"/>
-                <Label text="Monthly and yearly revenue analysis" styleClass="role-description" wrapText="true"/>
-                <Button text="Generate" styleClass="primary-button" maxWidth="Infinity"
-                        onAction="#handleRevenueReport"/>
+        <HBox alignment="CENTER_LEFT">
+            <VBox>
+                <Label text="Generate Reports" styleClass="title"/>
+                <Label text="Create comprehensive railway analytics reports" styleClass="subtitle"/>
             </VBox>
+        </HBox>
 
-            <VBox styleClass="role-card" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Label text="🚂 Train Performance" styleClass="role-title"/>
-                <Label text="On-time performance and delays" styleClass="role-description" wrapText="true"/>
-                <Button text="Generate" styleClass="primary-button" maxWidth="Infinity"
-                        onAction="#handlePerformanceReport"/>
-            </VBox>
+        <!-- Report Type Selection -->
+        <VBox styleClass="data-card" spacing="20">
+            <Label text="Select Report Type" styleClass="card-title"/>
 
-            <VBox styleClass="role-card" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Label text="👥 Passenger Statistics" styleClass="role-title"/>
-                <Label text="Daily, weekly, and monthly passenger data" styleClass="role-description" wrapText="true"/>
-                <Button text="Generate" styleClass="primary-button" maxWidth="Infinity"
-                        onAction="#handlePassengerReport"/>
-            </VBox>
+            <GridPane hgap="15" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
 
-            <VBox styleClass="role-card" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Label text="🛤️ Route Analysis" styleClass="role-title"/>
-                <Label text="Most and least profitable routes" styleClass="role-description" wrapText="true"/>
-                <Button text="Generate" styleClass="primary-button" maxWidth="Infinity"
-                        onAction="#handleRouteReport"/>
-            </VBox>
-        </GridPane>
-    </VBox>
-
-    <!-- Custom Report -->
-    <VBox styleClass="data-card" spacing="15">
-        <Label text="Custom Report" styleClass="card-title"/>
-
-        <GridPane hgap="15" vgap="15">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"/>
-                <ColumnConstraints percentWidth="50"/>
-            </columnConstraints>
-
-            <VBox spacing="8" GridPane.columnIndex="0">
-                <Label text="Start Date" styleClass="field-label"/>
-                <DatePicker fx:id="startDatePicker" maxWidth="Infinity"/>
-            </VBox>
-
-            <VBox spacing="8" GridPane.columnIndex="1">
-                <Label text="End Date" styleClass="field-label"/>
-                <DatePicker fx:id="endDatePicker" maxWidth="Infinity"/>
-            </VBox>
-
-            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Label text="Report Category" styleClass="field-label"/>
-                <ComboBox fx:id="categoryCombo" maxWidth="Infinity">
-                    <items>
-                        <javafx.collections.FXCollections fx:factory="observableArrayList">
-                            <String fx:value="All Categories"/>
-                            <String fx:value="Revenue"/>
-                            <String fx:value="Operations"/>
-                            <String fx:value="Maintenance"/>
-                        </javafx.collections.FXCollections>
-                    </items>
-                </ComboBox>
-            </VBox>
-
-            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Label text="Export Format" styleClass="field-label"/>
-                <ComboBox fx:id="formatCombo" maxWidth="Infinity">
-                    <items>
-                        <javafx.collections.FXCollections fx:factory="observableArrayList">
-                            <String fx:value="PDF"/>
-                            <String fx:value="Excel (XLSX)"/>
-                            <String fx:value="CSV"/>
-                        </javafx.collections.FXCollections>
-                    </items>
-                </ComboBox>
-            </VBox>
-        </GridPane>
-
-        <Button text="📥 Generate Custom Report" styleClass="primary-button"
-                maxWidth="300" onAction="#handleCustomReport"/>
-    </VBox>
-
-    <!-- Recent Reports -->
-    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
-        <Label text="Recent Reports" styleClass="card-title"/>
-
-        <VBox spacing="10" fx:id="recentReportsContainer">
-            <HBox styleClass="info-card" spacing="15" alignment="CENTER_LEFT">
-                <Label text="📄" styleClass="icon-medium"/>
-                <VBox HBox.hgrow="ALWAYS">
-                    <Label text="Revenue Report - November 2025" styleClass="field-label"/>
-                    <Label text="Generated on Nov 15, 2025" styleClass="small-text"/>
+                <VBox styleClass="role-card" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="📊 Revenue Report" styleClass="role-title"/>
+                    <Label text="Monthly and yearly revenue analysis" styleClass="role-description" wrapText="true"/>
+                    <Button text="Generate" styleClass="primary-button" maxWidth="Infinity"
+                            onAction="#handleRevenueReport"/>
                 </VBox>
-                <Button text="📥 Download" styleClass="secondary-button"/>
-            </HBox>
 
-            <HBox styleClass="info-card" spacing="15" alignment="CENTER_LEFT">
-                <Label text="📄" styleClass="icon-medium"/>
-                <VBox HBox.hgrow="ALWAYS">
-                    <Label text="Train Performance - Q3 2025" styleClass="field-label"/>
-                    <Label text="Generated on Oct 28, 2025" styleClass="small-text"/>
+                <VBox styleClass="role-card" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="🚂 Train Performance" styleClass="role-title"/>
+                    <Label text="On-time performance and delays" styleClass="role-description" wrapText="true"/>
+                    <Button text="Generate" styleClass="primary-button" maxWidth="Infinity"
+                            onAction="#handlePerformanceReport"/>
                 </VBox>
-                <Button text="📥 Download" styleClass="secondary-button"/>
-            </HBox>
-        </VBox>
-    </VBox>
 
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
-</VBox>
+                <VBox styleClass="role-card" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="👥 Passenger Statistics" styleClass="role-title"/>
+                    <Label text="Daily, weekly, and monthly passenger data" styleClass="role-description" wrapText="true"/>
+                    <Button text="Generate" styleClass="primary-button" maxWidth="Infinity"
+                            onAction="#handlePassengerReport"/>
+                </VBox>
+
+                <VBox styleClass="role-card" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="🛤️ Route Analysis" styleClass="role-title"/>
+                    <Label text="Most and least profitable routes" styleClass="role-description" wrapText="true"/>
+                    <Button text="Generate" styleClass="primary-button" maxWidth="Infinity"
+                            onAction="#handleRouteReport"/>
+                </VBox>
+            </GridPane>
+        </VBox>
+
+        <!-- Custom Report -->
+        <VBox styleClass="data-card" spacing="15">
+            <Label text="Custom Report" styleClass="card-title"/>
+
+            <GridPane hgap="15" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <VBox spacing="8" GridPane.columnIndex="0">
+                    <Label text="Start Date" styleClass="field-label"/>
+                    <DatePicker fx:id="startDatePicker" maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="8" GridPane.columnIndex="1">
+                    <Label text="End Date" styleClass="field-label"/>
+                    <DatePicker fx:id="endDatePicker" maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Report Category" styleClass="field-label"/>
+                    <ComboBox fx:id="categoryCombo" maxWidth="Infinity">
+                        <items>
+                            <javafx.collections.FXCollections fx:factory="observableArrayList">
+                                <String fx:value="All Categories"/>
+                                <String fx:value="Revenue"/>
+                                <String fx:value="Operations"/>
+                                <String fx:value="Maintenance"/>
+                            </javafx.collections.FXCollections>
+                        </items>
+                    </ComboBox>
+                </VBox>
+
+                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Export Format" styleClass="field-label"/>
+                    <ComboBox fx:id="formatCombo" maxWidth="Infinity">
+                        <items>
+                            <javafx.collections.FXCollections fx:factory="observableArrayList">
+                                <String fx:value="PDF"/>
+                                <String fx:value="Excel (XLSX)"/>
+                                <String fx:value="CSV"/>
+                            </javafx.collections.FXCollections>
+                        </items>
+                    </ComboBox>
+                </VBox>
+            </GridPane>
+
+            <Button text="📥 Generate Custom Report" styleClass="primary-button"
+                    maxWidth="300" onAction="#handleCustomReport"/>
+        </VBox>
+
+        <!-- Recent Reports -->
+        <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+            <Label text="Recent Reports" styleClass="card-title"/>
+
+            <VBox spacing="10" fx:id="recentReportsContainer">
+                <HBox styleClass="info-card" spacing="15" alignment="CENTER_LEFT">
+                    <Label text="📄" styleClass="icon-medium"/>
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Revenue Report - November 2025" styleClass="field-label"/>
+                        <Label text="Generated on Nov 15, 2025" styleClass="small-text"/>
+                    </VBox>
+                    <Button text="📥 Download" styleClass="secondary-button"/>
+                </HBox>
+
+                <HBox styleClass="info-card" spacing="15" alignment="CENTER_LEFT">
+                    <Label text="📄" styleClass="icon-medium"/>
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Train Performance - Q3 2025" styleClass="field-label"/>
+                        <Label text="Generated on Oct 28, 2025" styleClass="small-text"/>
+                    </VBox>
+                    <Button text="📥 Download" styleClass="secondary-button"/>
+                </HBox>
+            </VBox>
+        </VBox>
+
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+    </VBox>
+</ScrollPane>

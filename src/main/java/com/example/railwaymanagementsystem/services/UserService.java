@@ -1,6 +1,7 @@
 package com.example.railwaymanagementsystem.services;
 
 import com.example.railwaymanagementsystem.models.User;
+import javafx.collections.ObservableList;
 
 import java.util.Optional;
 
@@ -42,5 +43,9 @@ public class UserService {
             return Optional.of(updatedUser);
         }
         return Optional.empty();
+    }
+
+    public ObservableList<User> getUsers() {
+        return repo.getUsers();
     }
 }

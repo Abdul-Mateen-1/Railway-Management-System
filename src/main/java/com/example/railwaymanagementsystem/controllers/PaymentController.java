@@ -60,6 +60,10 @@ public class PaymentController {
         loadPendingBookings();
     }
 
+    public void refresh() {
+        loadPendingBookings();
+    }
+
     private void loadPendingBookings() {
         Optional<String> userIdOpt = session.getCurrentUser().map(u -> u.getId());
         if (userIdOpt.isEmpty()) {
@@ -94,7 +98,6 @@ public class PaymentController {
             bookingsContainer.getChildren().add(bookingCard);
         }
         
-        // Auto-select first booking if available
         if (!pendingBookings.isEmpty()) {
             selectBooking(pendingBookings.get(0));
         }
@@ -102,11 +105,9 @@ public class PaymentController {
 
     private VBox createBookingCard(Booking booking) {
         VBox card = new VBox(10);
-        // Store booking reference in userData for easy retrieval
         card.setUserData(booking);
         updateCardStyle(card, booking);
         
-        // Add hover effects
         card.setOnMouseEntered(e -> {
             if (selectedBooking == null || !selectedBooking.getId().equals(booking.getId())) {
                 card.setStyle("-fx-background-color: #f0fdf4; -fx-padding: 15px; " +
@@ -164,13 +165,11 @@ public class PaymentController {
         seatsInfoLabel.setText(booking.getNumberOfSeats() + " seat(s) - " + booking.getSeatClass());
         amountInfoLabel.setText("PKR " + String.format("%,.0f", booking.getTotalAmount()));
 
-        // Reset payment method
         cashOnDeliveryRadio.setSelected(true);
         cardDetailsContainer.setVisible(false);
         cardDetailsContainer.setManaged(false);
         clearCardFields();
         
-        // Update card styles to show selected
         updateCardStyles();
     }
     
@@ -224,7 +223,6 @@ public class PaymentController {
             }
         }
 
-        // Process payment directly
         boolean success = backend.processPayment(selectedBooking.getId(), paymentMethod);
         if (success) {
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -298,4 +296,3 @@ public class PaymentController {
         alert.showAndWait();
     }
 }
-

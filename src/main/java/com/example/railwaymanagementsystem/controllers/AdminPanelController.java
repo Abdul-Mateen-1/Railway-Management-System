@@ -5,7 +5,11 @@ import com.example.railwaymanagementsystem.services.AppSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Controller for the Admin Panel - Main container with sidebar
@@ -13,42 +17,59 @@ import javafx.scene.layout.StackPane;
 public class AdminPanelController {
 
     @FXML private StackPane contentArea;
+    @FXML private Button dashboardButton;
+    @FXML private Button trainManagementButton;
+    @FXML private Button scheduleManagementButton;
+    @FXML private Button reportsButton;
+    @FXML private Button userManagementButton;
+    @FXML private Button settingsButton;
+
+    private List<Button> navigationButtons;
+    private static AdminPanelController instance;
+
+    public AdminPanelController() {
+        instance = this;
+    }
+
+    public static AdminPanelController getInstance() {
+        return instance;
+    }
 
     @FXML
     private void initialize() {
-        // Load Train Management by default
-        showTrainManagement();
+        navigationButtons = List.of(dashboardButton, trainManagementButton, scheduleManagementButton,
+                reportsButton, userManagementButton, settingsButton);
+        showDashboard();
     }
 
     @FXML
     private void showDashboard() {
-        loadContent("Dashboard.fxml");
+        loadContent("Dashboard.fxml", dashboardButton);
     }
 
     @FXML
     private void showTrainManagement() {
-        loadContent("TrainManagement.fxml");
+        loadContent("TrainManagement.fxml", trainManagementButton);
     }
 
     @FXML
     private void showScheduleManagement() {
-        loadContent("ScheduleManagement.fxml");
-
+        loadContent("ScheduleManagement.fxml", scheduleManagementButton);
     }
 
     @FXML
     private void showReports() {
-        loadContent("GenerateReports.fxml");
+        loadContent("GenerateReports.fxml", reportsButton);
     }
 
     @FXML
     private void showUserManagement() {
-        loadContent("UserManagement.fxml");
+        loadContent("UserManagement.fxml", userManagementButton);
     }
 
     @FXML
     private void showSettings() {
-        loadContent("Settings.fxml");
+        loadContent("Settings.fxml", settingsButton);
     }
 
     private final AppSession session = AppSession.getInstance();
@@ -64,44 +85,35 @@ public class AdminPanelController {
         }
     }
 
-    /**
-     * Load content into the content area
-     */
-    private void loadContent(String fxmlFile) {
+    private void setActiveButton(Button activeButton) {
+        for (Button button : navigationButtons) {
+            if (button.equals(activeButton)) {
+                if (!button.getStyleClass().contains("active")) {
+                    button.getStyleClass().add("active");
+                }
+            } else {
+                button.getStyleClass().remove("active");
+            }
+        }
+    }
+
+    public void loadContent(String fxmlFile, Button activeButton) {
         try {
-            System.out.println("Loading: " + fxmlFile);
-
-            // Use RailSafarApp.class to load resources (same as showWelcomeScreen)
-            java.net.URL resourceUrl = RailSafarApp.class.getResource(fxmlFile);
-
-            if (resourceUrl == null) {
-                // Try with leading slash
-                resourceUrl = RailSafarApp.class.getResource("/" + fxmlFile);
+            if (activeButton != null) {
+                setActiveButton(activeButton);
+            } else {
+                // If no button is passed, clear all active states
+                for (Button button : navigationButtons) {
+                    button.getStyleClass().remove("active");
+                }
             }
-
-            if (resourceUrl == null) {
-                throw new Exception("Cannot find FXML file: " + fxmlFile);
-            }
-
-            System.out.println("Found resource at: " + resourceUrl);
-
-            FXMLLoader loader = new FXMLLoader(resourceUrl);
+            FXMLLoader loader = new FXMLLoader(RailSafarApp.class.getResource(fxmlFile));
             Parent content = loader.load();
             contentArea.getChildren().clear();
             contentArea.getChildren().add(content);
-
-            System.out.println("Successfully loaded: " + fxmlFile);
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error loading " + fxmlFile + ": " + e.getMessage());
-
-            javafx.scene.control.Label placeholder = new javafx.scene.control.Label(
-                    "Error: Cannot load " + fxmlFile + "\n\n" + e.getMessage()
-            );
-            placeholder.setStyle("-fx-font-size: 14px; -fx-text-fill: #dc2626; -fx-padding: 20;");
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(placeholder);
         }
     }
 }

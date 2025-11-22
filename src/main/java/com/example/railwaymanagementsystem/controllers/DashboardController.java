@@ -1,9 +1,17 @@
 package com.example.railwaymanagementsystem.controllers;
 
+import com.example.railwaymanagementsystem.models.Booking;
+import com.example.railwaymanagementsystem.services.BackendService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 /**
  * Controller for Dashboard Screen
@@ -12,44 +20,75 @@ public class DashboardController {
 
     @FXML private Label totalTrainsLabel;
     @FXML private Label activeRoutesLabel;
-    @FXML private Label dailyPassengersLabel;
-    @FXML private Label revenueLabel;
-    @FXML private TableView<String> activityTable;
+    @FXML private TableView<Booking> activityTable;
+    @FXML private TableColumn<Booking, String> timeColumn;
+    @FXML private TableColumn<Booking, String> activityColumn;
+    @FXML private TableColumn<Booking, String> trainColumn;
+    @FXML private TableColumn<Booking, String> statusColumn;
+
+    private final BackendService backend = BackendService.getInstance();
 
     @FXML
     private void initialize() {
-        // Statistics are already set in FXML
-        // In production, fetch from database
+        loadDashboardStats();
+        setupActivityTable();
+        loadRecentActivity();
+    }
 
-        // Initialize activity table with sample data
-        ObservableList<String> activities = FXCollections.observableArrayList(
-                "Train 1UP departed from Karachi",
-                "Train 2DN delayed by 30 minutes",
-                "New booking: PNR 12345",
-                "Train 5UP arrived at Lahore",
-                "Cancellation: PNR 98765"
+    private void loadDashboardStats() {
+        int totalTrains = backend.getTrains().size();
+        totalTrainsLabel.setText(String.valueOf(totalTrains));
+
+        long uniqueRoutes = backend.getSchedules().stream()
+                .map(schedule -> schedule.getRoute())
+                .distinct()
+                .count();
+        activeRoutesLabel.setText(String.valueOf(uniqueRoutes));
+    }
+
+    private void setupActivityTable() {
+        timeColumn.setCellValueFactory(cellData -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, hh:mm a");
+            return new javafx.beans.property.SimpleStringProperty(cellData.getValue().getBookingDateTime().format(formatter));
+        });
+        activityColumn.setCellValueFactory(cellData -> {
+            String activity = String.format("New booking for %d seats from %s to %s",
+                    cellData.getValue().getNumberOfSeats(),
+                    cellData.getValue().getFromStation(),
+                    cellData.getValue().getToStation());
+            return new javafx.beans.property.SimpleStringProperty(activity);
+        });
+        trainColumn.setCellValueFactory(new PropertyValueFactory<>("trainName"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
+    private void loadRecentActivity() {
+        ObservableList<Booking> recentBookings = FXCollections.observableArrayList(
+                backend.getAllBookings().stream()
+                        .sorted((b1, b2) -> b2.getBookingDateTime().compareTo(b1.getBookingDateTime()))
+                        .limit(5)
+                        .collect(Collectors.toList())
         );
-
-        // Note: In production, use proper data models
+        activityTable.setItems(recentBookings);
     }
 
     @FXML
     private void handleViewReports() {
-        System.out.println("Navigate to Reports");
+        AdminPanelController.getInstance().loadContent("GenerateReports.fxml", null);
     }
 
     @FXML
     private void handleManageTrains() {
-        System.out.println("Navigate to Train Management");
+        AdminPanelController.getInstance().loadContent("TrainManagement.fxml", null);
     }
 
     @FXML
     private void handleViewUsers() {
-        System.out.println("Navigate to User Management");
+        AdminPanelController.getInstance().loadContent("UserManagement.fxml", null);
     }
 
     @FXML
     private void handleSettings() {
-        System.out.println("Navigate to Settings");
+        AdminPanelController.getInstance().loadContent("Settings.fxml", null);
     }
 }

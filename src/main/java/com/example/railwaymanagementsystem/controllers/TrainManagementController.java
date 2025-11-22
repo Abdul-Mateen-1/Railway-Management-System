@@ -1,15 +1,18 @@
 package com.example.railwaymanagementsystem.controllers;
 
-import com.example.railwaymanagementsystem.RailSafarApp;
 import com.example.railwaymanagementsystem.models.Train;
 import com.example.railwaymanagementsystem.services.BackendService;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+
+import java.util.Optional;
+import java.util.Random;
 
 /**
  * Controller for Train Management Screen
@@ -27,40 +30,31 @@ public class TrainManagementController {
     private final BackendService backend = BackendService.getInstance();
     private ObservableList<Train> trainData;
     private FilteredList<Train> filteredData;
+    private final Random random = new Random();
 
     @FXML
     private void initialize() {
-        // Initialize data
         initializeTrainData();
-
-        // Setup table
         setupTable();
-
-        // Setup filters
         setupFilters();
 
-        // Set default filter values
         statusFilterCombo.setValue("All Status");
         typeFilterCombo.setValue("All Types");
         routeFilterCombo.setValue("All Routes");
     }
 
-    /**
-     * Initialize data from backend
-     */
     private void initializeTrainData() {
-        trainData = FXCollections.observableArrayList(backend.getTrains());
-
+        trainData = backend.getTrains();
         filteredData = new FilteredList<>(trainData, p -> true);
         trainTable.setItems(filteredData);
         updateCountLabel();
+
+        trainData.addListener((javafx.collections.ListChangeListener.Change<? extends Train> c) -> {
+            updateCountLabel();
+        });
     }
 
-    /**
-     * Setup table with action buttons
-     */
     private void setupTable() {
-        // Use the actions column from FXML
         actionsColumn.setCellFactory(param -> new TableCell<>() {
             private final Button editBtn = new Button("✏️");
             private final Button deleteBtn = new Button("🗑️");
@@ -90,26 +84,13 @@ public class TrainManagementController {
         });
     }
 
-    /**
-     * Setup filter listeners
-     */
     private void setupFilters() {
-        // Search field listener
         searchField.textProperty().addListener((observable, oldValue, newValue) -> applyFilters());
-
-        // Status filter listener
         statusFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
-
-        // Type filter listener
         typeFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
-
-        // Route filter listener
         routeFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
     }
 
-    /**
-     * Apply all filters
-     */
     private void applyFilters() {
         final String searchText = searchField.getText();
         final String statusFilter = statusFilterCombo.getValue();
@@ -117,22 +98,18 @@ public class TrainManagementController {
         final String routeFilter = routeFilterCombo.getValue();
 
         filteredData.setPredicate(train -> {
-            // Search filter
             final String lowerCaseSearchText = (searchText == null) ? "" : searchText.toLowerCase();
             boolean matchesSearch = lowerCaseSearchText.isEmpty() ||
                     (train.getTrainNumber() != null && train.getTrainNumber().toLowerCase().contains(lowerCaseSearchText)) ||
                     (train.getTrainName() != null && train.getTrainName().toLowerCase().contains(lowerCaseSearchText)) ||
                     (train.getRoute() != null && train.getRoute().toLowerCase().contains(lowerCaseSearchText));
 
-            // Status filter
             boolean matchesStatus = (statusFilter == null) || "All Status".equals(statusFilter) ||
                     (train.getStatus() != null && train.getStatus().equals(statusFilter));
 
-            // Type filter
             boolean matchesType = (typeFilter == null) || "All Types".equals(typeFilter) ||
                     (train.getType() != null && train.getType().equals(typeFilter));
 
-            // Route filter
             boolean matchesRoute = (routeFilter == null) || "All Routes".equals(routeFilter) ||
                     (train.getRoute() != null && train.getRoute().contains(routeFilter));
 
@@ -142,9 +119,6 @@ public class TrainManagementController {
         updateCountLabel();
     }
 
-    /**
-     * Update the count label
-     */
     private void updateCountLabel() {
         countLabel.setText(String.format("Showing %d of %d trains",
                 filteredData.size(), trainData.size()));
@@ -152,47 +126,35 @@ public class TrainManagementController {
 
     @FXML
     private void handleAddTrain() {
-        // Show add train dialog
-        TextInputDialog dialog = new TextInputDialog();
+        Dialog<Train> dialog = createTrainDialog(null);
         dialog.setTitle("Add New Train");
-        dialog.setHeaderText("Add a new train to the system");
-        dialog.setContentText("Train Name:");
+        dialog.setHeaderText("Enter the details for the new train.");
 
-        dialog.showAndWait().ifPresent(name -> {
-            String number = "TN" + (trainData.size() + 1);
-            Train newTrain = backend.createTrain(number, name, "Express", "Karachi - Lahore", "On-time");
-            trainData.add(newTrain);
-            updateCountLabel();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText("Train added successfully!");
-            alert.showAndWait();
+        Optional<Train> result = dialog.showAndWait();
+        result.ifPresent(newTrain -> {
+            backend.createTrain(newTrain.getTrainNumber(), newTrain.getTrainName(), newTrain.getType(), newTrain.getRoute(), "On-time");
+            showSuccess("Train added successfully!");
         });
     }
 
     private void handleEditTrain(Train train) {
-        // Show edit dialog
-        TextInputDialog dialog = new TextInputDialog(train.getTrainName());
+        Dialog<Train> dialog = createTrainDialog(train);
         dialog.setTitle("Edit Train");
-        dialog.setHeaderText("Edit train: " + train.getTrainNumber());
-        dialog.setContentText("Train Name:");
+        dialog.setHeaderText("Edit the details for train: " + train.getTrainNumber());
 
-        dialog.showAndWait().ifPresent(name -> {
-            train.setTrainName(name);
+        Optional<Train> result = dialog.showAndWait();
+        result.ifPresent(editedTrain -> {
+            train.setTrainName(editedTrain.getTrainName());
+            train.setTrainNumber(editedTrain.getTrainNumber());
+            train.setType(editedTrain.getType());
+            train.setRoute(editedTrain.getRoute());
+            backend.updateTrain(train);
             trainTable.refresh();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText("Train updated successfully!");
-            alert.showAndWait();
+            showSuccess("Train updated successfully!");
         });
     }
 
     private void handleDeleteTrain(Train train) {
-        // Show confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Train");
         alert.setHeaderText("Delete train " + train.getTrainNumber() + " - " + train.getTrainName() + "?");
@@ -201,15 +163,79 @@ public class TrainManagementController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 backend.deleteTrain(train);
-                trainData.remove(train);
-                updateCountLabel();
-
-                Alert success = new Alert(Alert.AlertType.INFORMATION);
-                success.setTitle("Success");
-                success.setHeaderText(null);
-                success.setContentText("Train deleted successfully!");
-                success.showAndWait();
+                showSuccess("Train deleted successfully!");
             }
         });
+    }
+
+    private Dialog<Train> createTrainDialog(Train train) {
+        Dialog<Train> dialog = new Dialog<>();
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
+
+        TextField trainNumberField = new TextField();
+        trainNumberField.setPromptText("e.g., 1UP");
+        TextField trainNameField = new TextField();
+        trainNameField.setPromptText("e.g., Khyber Mail");
+        ComboBox<String> typeComboBox = new ComboBox<>();
+        typeComboBox.getItems().addAll("Express", "Passenger", "Freight");
+        TextField routeField = new TextField();
+        routeField.setPromptText("e.g., Karachi - Peshawar");
+
+        if (train != null) {
+            // Editing an existing train
+            trainNumberField.setText(train.getTrainNumber());
+            trainNameField.setText(train.getTrainName());
+            typeComboBox.setValue(train.getType());
+            routeField.setText(train.getRoute());
+        } else {
+            // Adding a new train
+            String nextId = backend.nextTrainId();
+            String suffix = random.nextBoolean() ? "UP" : "DN";
+            trainNumberField.setText(nextId + suffix);
+            trainNumberField.setEditable(false);
+        }
+
+        grid.add(new Label("Train Number:"), 0, 0);
+        grid.add(trainNumberField, 1, 0);
+        grid.add(new Label("Train Name:"), 0, 1);
+        grid.add(trainNameField, 1, 1);
+        grid.add(new Label("Type:"), 0, 2);
+        grid.add(typeComboBox, 1, 2);
+        grid.add(new Label("Route:"), 0, 3);
+        grid.add(routeField, 1, 3);
+
+        GridPane.setHgrow(trainNameField, Priority.ALWAYS);
+        GridPane.setHgrow(routeField, Priority.ALWAYS);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                return new Train(
+                        (train != null) ? train.getId() : backend.nextTrainId(),
+                        trainNumberField.getText(),
+                        trainNameField.getText(),
+                        typeComboBox.getValue(),
+                        routeField.getText(),
+                        (train != null) ? train.getStatus() : "On-time"
+                );
+            }
+            return null;
+        });
+
+        return dialog;
+    }
+
+    private void showSuccess(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

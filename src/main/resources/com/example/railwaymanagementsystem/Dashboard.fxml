@@ -4,83 +4,68 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.railwaymanagementsystem.controllers.DashboardController"
-      spacing="25" styleClass="content-area">
+<ScrollPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.railwaymanagementsystem.controllers.DashboardController"
+            styleClass="transparent-scrollpane" fitToWidth="true" fitToHeight="true">
 
-    <!-- Header -->
-    <HBox alignment="CENTER_LEFT">
-        <VBox>
-            <Label text="Dashboard" styleClass="title"/>
-            <Label text="Railway operations overview and statistics" styleClass="subtitle"/>
+    <VBox spacing="25" styleClass="content-area">
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT">
+            <VBox>
+                <Label text="Dashboard" styleClass="title"/>
+                <Label text="Railway operations overview and statistics" styleClass="subtitle"/>
+            </VBox>
+        </HBox>
+
+        <!-- Statistics Cards -->
+        <GridPane hgap="20" vgap="20">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <!-- Total Trains Card -->
+            <VBox styleClass="data-card" spacing="10" GridPane.columnIndex="0">
+                <Label text="🚂" styleClass="icon-medium"/>
+                <Label text="Total Trains" styleClass="card-description"/>
+                <Label fx:id="totalTrainsLabel" text="0" styleClass="title"/>
+                <Label text="Total operational trains" styleClass="small-text"/>
+            </VBox>
+
+            <!-- Active Routes Card -->
+            <VBox styleClass="data-card" spacing="10" GridPane.columnIndex="1">
+                <Label text="🛤️" styleClass="icon-medium"/>
+                <Label text="Active Routes" styleClass="card-description"/>
+                <Label fx:id="activeRoutesLabel" text="0" styleClass="title"/>
+                <Label text="Number of unique routes" styleClass="small-text"/>
+            </VBox>
+        </GridPane>
+
+        <!-- Recent Activity -->
+        <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+            <Label text="Recent Activity" styleClass="card-title"/>
+
+            <TableView fx:id="activityTable" styleClass="table-view">
+                <columns>
+                    <TableColumn fx:id="timeColumn" text="Time" prefWidth="120"/>
+                    <TableColumn fx:id="activityColumn" text="Activity" prefWidth="300"/>
+                    <TableColumn fx:id="trainColumn" text="Train" prefWidth="150"/>
+                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="120"/>
+                </columns>
+            </TableView>
         </VBox>
-    </HBox>
 
-    <!-- Statistics Cards -->
-    <GridPane hgap="20" vgap="20">
-        <columnConstraints>
-            <ColumnConstraints percentWidth="25"/>
-            <ColumnConstraints percentWidth="25"/>
-            <ColumnConstraints percentWidth="25"/>
-            <ColumnConstraints percentWidth="25"/>
-        </columnConstraints>
+        <!-- Quick Actions -->
+        <HBox spacing="15">
+            <Button text="📊 View Reports" styleClass="secondary-button" onAction="#handleViewReports"/>
+            <Button text="🚂 Manage Trains" styleClass="secondary-button" onAction="#handleManageTrains"/>
+            <Button text="👥 View Users" styleClass="secondary-button" onAction="#handleViewUsers"/>
+            <Button text="⚙️ Settings" styleClass="secondary-button" onAction="#handleSettings"/>
+        </HBox>
 
-        <!-- Total Trains Card -->
-        <VBox styleClass="data-card" spacing="10" GridPane.columnIndex="0">
-            <Label text="🚂" styleClass="icon-medium"/>
-            <Label text="Total Trains" styleClass="card-description"/>
-            <Label fx:id="totalTrainsLabel" text="145" styleClass="title"/>
-            <Label text="+12 this month" styleClass="small-text" style="-fx-text-fill: #16a34a;"/>
-        </VBox>
-
-        <!-- Active Routes Card -->
-        <VBox styleClass="data-card" spacing="10" GridPane.columnIndex="1">
-            <Label text="🛤️" styleClass="icon-medium"/>
-            <Label text="Active Routes" styleClass="card-description"/>
-            <Label fx:id="activeRoutesLabel" text="28" styleClass="title"/>
-            <Label text="5 major cities" styleClass="small-text"/>
-        </VBox>
-
-        <!-- Daily Passengers Card -->
-        <VBox styleClass="data-card" spacing="10" GridPane.columnIndex="2">
-            <Label text="👥" styleClass="icon-medium"/>
-            <Label text="Daily Passengers" styleClass="card-description"/>
-            <Label fx:id="dailyPassengersLabel" text="12,458" styleClass="title"/>
-            <Label text="+8.2% from yesterday" styleClass="small-text" style="-fx-text-fill: #16a34a;"/>
-        </VBox>
-
-        <!-- Revenue Card -->
-        <VBox styleClass="data-card" spacing="10" GridPane.columnIndex="3">
-            <Label text="💰" styleClass="icon-medium"/>
-            <Label text="Monthly Revenue" styleClass="card-description"/>
-            <Label fx:id="revenueLabel" text="PKR 2.4M" styleClass="title"/>
-            <Label text="+15.3% this month" styleClass="small-text" style="-fx-text-fill: #16a34a;"/>
-        </VBox>
-    </GridPane>
-
-    <!-- Recent Activity -->
-    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
-        <Label text="Recent Activity" styleClass="card-title"/>
-
-        <TableView fx:id="activityTable" styleClass="table-view">
-            <columns>
-                <TableColumn text="Time" prefWidth="120"/>
-                <TableColumn text="Activity" prefWidth="300"/>
-                <TableColumn text="Train" prefWidth="150"/>
-                <TableColumn text="Status" prefWidth="120"/>
-            </columns>
-        </TableView>
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
     </VBox>
-
-    <!-- Quick Actions -->
-    <HBox spacing="15">
-        <Button text="📊 View Reports" styleClass="secondary-button" onAction="#handleViewReports"/>
-        <Button text="🚂 Manage Trains" styleClass="secondary-button" onAction="#handleManageTrains"/>
-        <Button text="👥 View Users" styleClass="secondary-button" onAction="#handleViewUsers"/>
-        <Button text="⚙️ Settings" styleClass="secondary-button" onAction="#handleSettings"/>
-    </HBox>
-
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
-</VBox>
+</ScrollPane>

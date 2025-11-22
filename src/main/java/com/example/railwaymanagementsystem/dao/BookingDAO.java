@@ -3,6 +3,8 @@ package com.example.railwaymanagementsystem.dao;
 import com.example.railwaymanagementsystem.models.Booking;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +53,7 @@ public class BookingDAO {
     public boolean updateBooking(Booking booking) throws SQLException {
         String sql = "UPDATE bookings SET user_id = ?, train_id = ?, train_number = ?, train_name = ?, from_station = ?, to_station = ?, travel_date = ?, number_of_seats = ?, seat_class = ?, total_amount = ?, status = ?, booking_date_time = ?, payment_method = ?, payment_status = ? WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Parameters for UPDATE are in a different order than INSERT
             pstmt.setString(1, booking.getUserId());
             pstmt.setString(2, booking.getTrainId());
             pstmt.setString(3, booking.getTrainNumber());
@@ -65,6 +68,7 @@ public class BookingDAO {
             pstmt.setTimestamp(12, Timestamp.valueOf(booking.getBookingDateTime()));
             pstmt.setString(13, booking.getPaymentMethod());
             pstmt.setString(14, booking.getPaymentStatus());
+            // Parameter for the WHERE clause
             pstmt.setString(15, booking.getId());
             return pstmt.executeUpdate() > 0;
         }
@@ -75,24 +79,26 @@ public class BookingDAO {
     }
 
     private Booking mapBookingFromResultSet(ResultSet rs) throws SQLException {
-        Booking booking = new Booking(
-            rs.getString("id"),
-            rs.getString("user_id"),
-            rs.getString("train_id"),
-            rs.getString("train_number"),
-            rs.getString("train_name"),
-            rs.getString("from_station"),
-            rs.getString("to_station"),
-            rs.getDate("travel_date").toLocalDate(),
-            rs.getInt("number_of_seats"),
-            rs.getString("seat_class"),
-            rs.getDouble("total_amount"),
-            rs.getString("status"),
-            rs.getTimestamp("booking_date_time").toLocalDateTime(),
-            rs.getString("payment_method") != null ? rs.getString("payment_method") : "",
-            rs.getString("payment_status") != null ? rs.getString("payment_status") : "Pending"
+        LocalDate travelDate = rs.getDate("travel_date").toLocalDate();
+        LocalDateTime bookingDateTime = rs.getTimestamp("booking_date_time").toLocalDateTime();
+
+        return new Booking(
+                rs.getString("id"),
+                rs.getString("user_id"),
+                rs.getString("train_id"),
+                rs.getString("train_number"),
+                rs.getString("train_name"),
+                rs.getString("from_station"),
+                rs.getString("to_station"),
+                travelDate,
+                rs.getInt("number_of_seats"),
+                rs.getString("seat_class"),
+                rs.getDouble("total_amount"),
+                rs.getString("status"),
+                bookingDateTime,
+                rs.getString("payment_method") != null ? rs.getString("payment_method") : "",
+                rs.getString("payment_status") != null ? rs.getString("payment_status") : "Pending"
         );
-        return booking;
     }
 
     private void setBookingParameters(PreparedStatement pstmt, Booking booking) throws SQLException {

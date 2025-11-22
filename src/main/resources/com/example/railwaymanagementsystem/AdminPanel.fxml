@@ -18,17 +18,17 @@
 
             <!-- Menu Items -->
             <VBox VBox.vgrow="ALWAYS" spacing="0">
-                <Button text="📊  Dashboard" styleClass="sidebar-button"
+                <Button fx:id="dashboardButton" text="📊  Dashboard" styleClass="sidebar-button"
                         onAction="#showDashboard"/>
-                <Button text="🚂  Train Management" styleClass="sidebar-button active"
+                <Button fx:id="trainManagementButton" text="🚂  Train Management" styleClass="sidebar-button"
                         onAction="#showTrainManagement"/>
-                <Button text="📅  Schedule Management" styleClass="sidebar-button"
+                <Button fx:id="scheduleManagementButton" text="📅  Schedule Management" styleClass="sidebar-button"
                         onAction="#showScheduleManagement"/>
-                <Button text="📈  Generate Reports" styleClass="sidebar-button"
+                <Button fx:id="reportsButton" text="📈  Generate Reports" styleClass="sidebar-button"
                         onAction="#showReports"/>
-                <Button text="👥  User Management" styleClass="sidebar-button"
+                <Button fx:id="userManagementButton" text="👥  User Management" styleClass="sidebar-button"
                         onAction="#showUserManagement"/>
-                <Button text="⚙️  Settings" styleClass="sidebar-button"
+                <Button fx:id="settingsButton" text="⚙️  Settings" styleClass="sidebar-button"
                         onAction="#showSettings"/>
             </VBox>
 

@@ -132,7 +132,7 @@
 .form-card {
     -fx-background-color: white;
     -fx-background-radius: 12px;
-    -fx-padding: 25px;
+    -fx-padding: 20px;
     -fx-border-color: -fx-border;
     -fx-border-width: 1px;
     -fx-border-radius: 12px;
@@ -277,8 +277,9 @@
     -fx-alignment: center-left;
 }
 
-.input-container:focused-within {
-    -fx-border-color: -fx-primary;
+.input-container {
+    -fx-padding: 4;
+    -fx-border-color: #E0E0E0;
 }
 
 .text-field, .password-field {
@@ -289,6 +290,7 @@
 }
 
 .text-field:focused, .password-field:focused {
+    -fx-pref-height: 32px;
     -fx-background-color: transparent;
     -fx-border-width: 0;
 }
@@ -375,6 +377,7 @@
     -fx-alignment: center-left;
     -fx-cursor: hand;
     -fx-border-width: 0;
+    -fx-pref-width: 260; /* Make button full width */
 }
 
 .sidebar-button:hover {
@@ -446,16 +449,17 @@
 .scroll-pane .scroll-bar .thumb:hover {
     -fx-background-color: derive(-fx-border, -40%);
 }
-/* styles.css */
 
 .transparent-scrollpane {
-    /* Ensures the ScrollPane background doesn't interfere with the BorderPane/Scene background */
     -fx-background-color: transparent;
-    /* Hides the horizontal scrollbar as it's not needed for this form */
-    -fx-hbar-policy: never;
+    -fx-background: transparent;
 }
 
-/* Ensures the viewport (the area being scrolled) is transparent */
-.transparent-scrollpane > .viewport {
+.transparent-scrollpane .viewport {
+    -fx-background-color: transparent;
+}
+
+.transparent-scrollpane .scroll-bar:vertical,
+.transparent-scrollpane .scroll-bar:horizontal {
     -fx-background-color: transparent;
 }

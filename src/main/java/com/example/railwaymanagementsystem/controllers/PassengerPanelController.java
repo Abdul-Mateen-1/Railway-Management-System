@@ -103,7 +103,6 @@ public class PassengerPanelController {
     @FXML
     private void onMouseEntered(MouseEvent event) {
         Button button = (Button) event.getSource();
-        // Don't change style if it's the active button
         if (button != currentActiveButton && button != btnLogout) {
             button.setStyle("-fx-background-color: #165638; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;");
         } else if (button == btnLogout) {
@@ -117,7 +116,6 @@ public class PassengerPanelController {
     @FXML
     private void onMouseExited(MouseEvent event) {
         Button button = (Button) event.getSource();
-        // Don't change style if it's the active button
         if (button != currentActiveButton && button != btnLogout) {
             button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;");
         } else if (button == btnLogout) {
@@ -129,12 +127,9 @@ public class PassengerPanelController {
      * Set the active button and update styles
      */
     private void setActiveButton(Button button) {
-        // Reset previous active button
         if (currentActiveButton != null) {
             currentActiveButton.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;");
         }
-
-        // Set new active button
         currentActiveButton = button;
         button.setStyle("-fx-background-color: #165638; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;");
     }
@@ -144,33 +139,28 @@ public class PassengerPanelController {
      */
     private void loadContent(String fxmlFile) {
         try {
-            System.out.println("Loading: " + fxmlFile);
-
-            // Use RailSafarApp.class to load resources (same as showWelcomeScreen)
             java.net.URL resourceUrl = RailSafarApp.class.getResource(fxmlFile);
-
-            if (resourceUrl == null) {
-                // Try with leading slash
-                resourceUrl = RailSafarApp.class.getResource("/" + fxmlFile);
-            }
-
             if (resourceUrl == null) {
                 throw new Exception("Cannot find FXML file: " + fxmlFile);
             }
 
-            System.out.println("Found resource at: " + resourceUrl);
-
             FXMLLoader loader = new FXMLLoader(resourceUrl);
             Parent content = loader.load();
+
+            // Special case for PaymentController to refresh its content
+            if ("Payment.fxml".equals(fxmlFile)) {
+                PaymentController controller = loader.getController();
+                if (controller != null) {
+                    controller.refresh();
+                }
+            }
+
             contentArea.getChildren().clear();
             contentArea.getChildren().add(content);
-
-            System.out.println("Successfully loaded: " + fxmlFile);
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error loading " + fxmlFile + ": " + e.getMessage());
-
             javafx.scene.control.Label placeholder = new javafx.scene.control.Label(
                     "Error: Cannot load " + fxmlFile + "\n\n" + e.getMessage()
             );

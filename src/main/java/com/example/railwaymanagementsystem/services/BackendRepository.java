@@ -4,9 +4,10 @@ import com.example.railwaymanagementsystem.models.Booking;
 import com.example.railwaymanagementsystem.models.Schedule;
 import com.example.railwaymanagementsystem.models.Train;
 import com.example.railwaymanagementsystem.models.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +22,26 @@ public final class BackendRepository {
     private final DatabaseService db = new DatabaseService();
     private static final Logger LOGGER = Logger.getLogger(BackendRepository.class.getName());
 
+    private final ObservableList<User> users;
+    private final ObservableList<Train> trains;
+    private final ObservableList<Schedule> schedules;
 
-    private BackendRepository() {}
+    private BackendRepository() {
+        users = FXCollections.observableArrayList();
+        trains = FXCollections.observableArrayList();
+        schedules = FXCollections.observableArrayList();
+        loadInitialData();
+    }
+
+    private void loadInitialData() {
+        try {
+            users.setAll(db.getAllUsers());
+            trains.setAll(db.getAllTrains());
+            schedules.setAll(db.getAllSchedules());
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error loading initial data", e);
+        }
+    }
 
     public static BackendRepository getInstance() {
         return INSTANCE;
@@ -30,35 +49,26 @@ public final class BackendRepository {
 
     // User operations
     public Optional<User> findUserByEmail(String email) {
-        try {
-            return db.findUserByEmail(email);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error finding user by email", e);
-            return Optional.empty();
-        }
+        return users.stream()
+                .filter(user -> user.getEmail().equalsIgnoreCase(email))
+                .findFirst();
     }
 
     public Optional<User> findUserById(String id) {
-        try {
-            return db.findUserById(id);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error finding user by id", e);
-            return Optional.empty();
-        }
+        return users.stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst();
     }
 
-    public Collection<User> getUsers() {
-        try {
-            return db.getAllUsers();
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error getting users", e);
-            return Collections.emptyList();
-        }
+    public ObservableList<User> getUsers() {
+        return users;
     }
 
     public User addUser(User user) {
         try {
-            return db.addUser(user);
+            User newUser = db.addUser(user);
+            users.add(newUser);
+            return newUser;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error adding user", e);
             return user;
@@ -67,7 +77,20 @@ public final class BackendRepository {
 
     public boolean updateUser(User user) {
         try {
-            return db.updateUser(user);
+            if (db.updateUser(user)) {
+                int index = -1;
+                for (int i = 0; i < users.size(); i++) {
+                    if (users.get(i).getId().equals(user.getId())) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    users.set(index, user);
+                }
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating user", e);
             return false;
@@ -75,12 +98,8 @@ public final class BackendRepository {
     }
 
     public boolean emailExists(String email, String excludeUserId) {
-        try {
-            return db.emailExists(email, excludeUserId);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error checking email existence", e);
-            return false;
-        }
+        return users.stream()
+                .anyMatch(user -> user.getEmail().equalsIgnoreCase(email) && !user.getId().equals(excludeUserId));
     }
 
     public String nextUserId() {
@@ -88,41 +107,32 @@ public final class BackendRepository {
             return db.getNextUserId();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error getting next user id", e);
-            return "1";
+            return String.valueOf(users.size() + 101); // Fallback
         }
     }
 
     // Train operations
-    public List<Train> getTrains() {
-        try {
-            return db.getAllTrains();
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error getting trains", e);
-            return Collections.emptyList();
-        }
+    public ObservableList<Train> getTrains() {
+        return trains;
     }
 
     public Optional<Train> findTrainById(String id) {
-        try {
-            return db.findTrainById(id);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error finding train by id", e);
-            return Optional.empty();
-        }
+        return trains.stream()
+                .filter(train -> train.getId().equals(id))
+                .findFirst();
     }
 
     public Optional<Train> findTrainByNumber(String trainNumber) {
-        try {
-            return db.findTrainByNumber(trainNumber);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error finding train by number", e);
-            return Optional.empty();
-        }
+        return trains.stream()
+                .filter(train -> train.getTrainNumber().equalsIgnoreCase(trainNumber))
+                .findFirst();
     }
 
     public Train addTrain(Train train) {
         try {
-            return db.addTrain(train);
+            Train newTrain = db.addTrain(train);
+            trains.add(newTrain);
+            return newTrain;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error adding train", e);
             return train;
@@ -131,7 +141,20 @@ public final class BackendRepository {
 
     public boolean updateTrain(Train train) {
         try {
-            return db.updateTrain(train);
+            if (db.updateTrain(train)) {
+                int index = -1;
+                for (int i = 0; i < trains.size(); i++) {
+                    if (trains.get(i).getId().equals(train.getId())) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    trains.set(index, train);
+                }
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating train", e);
             return false;
@@ -140,7 +163,9 @@ public final class BackendRepository {
 
     public void removeTrain(String id) {
         try {
-            db.removeTrain(id);
+            if (db.removeTrain(id)) {
+                trains.removeIf(train -> train.getId().equals(id));
+            }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error removing train", e);
         }
@@ -151,32 +176,26 @@ public final class BackendRepository {
             return db.getNextTrainId();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error getting next train id", e);
-            return "1";
+            return String.valueOf(trains.size() + 1); // Fallback
         }
     }
 
     // Schedule operations
-    public List<Schedule> getSchedules() {
-        try {
-            return db.getAllSchedules();
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error getting schedules", e);
-            return Collections.emptyList();
-        }
+    public ObservableList<Schedule> getSchedules() {
+        return schedules;
     }
 
     public Optional<Schedule> findScheduleByTrainNumber(String trainNumber) {
-        try {
-            return db.findScheduleByTrainNumber(trainNumber);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error finding schedule", e);
-            return Optional.empty();
-        }
+        return schedules.stream()
+                .filter(schedule -> schedule.getTrainNumber().equalsIgnoreCase(trainNumber))
+                .findFirst();
     }
 
     public Schedule addSchedule(Schedule schedule) {
         try {
-            return db.addSchedule(schedule);
+            Schedule newSchedule = db.addSchedule(schedule);
+            schedules.add(newSchedule);
+            return newSchedule;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error adding schedule", e);
             return schedule;
@@ -185,7 +204,20 @@ public final class BackendRepository {
 
     public boolean updateSchedule(Schedule schedule) {
         try {
-            return db.updateSchedule(schedule);
+            if (db.updateSchedule(schedule)) {
+                int index = -1;
+                for (int i = 0; i < schedules.size(); i++) {
+                    if (schedules.get(i).getId().equals(schedule.getId())) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    schedules.set(index, schedule);
+                }
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating schedule", e);
             return false;
@@ -194,7 +226,9 @@ public final class BackendRepository {
 
     public void removeSchedule(Schedule schedule) {
         try {
-            db.removeSchedule(schedule.getId());
+            if (db.removeSchedule(schedule.getId())) {
+                schedules.removeIf(s -> s.getId().equals(schedule.getId()));
+            }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error removing schedule", e);
         }
@@ -205,7 +239,7 @@ public final class BackendRepository {
             return db.getNextScheduleId();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error getting next schedule id", e);
-            return "1";
+            return String.valueOf(schedules.size() + 1); // Fallback
         }
     }
 

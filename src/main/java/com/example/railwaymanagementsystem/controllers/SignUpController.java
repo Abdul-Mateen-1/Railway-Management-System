@@ -54,10 +54,10 @@ public class SignUpController {
 
         User candidate = new User("", name, email, phone, "passenger", password);
         backend.register(candidate).ifPresentOrElse(user -> {
-            session.setCurrentUser(user);
+            //session.setCurrentUser(user);
             showSuccess("Account created. Welcome " + user.getName() + "!");
             try {
-                RailSafarApp.showPassengerPanel();
+                RailSafarApp.showLoginScreen("Passenger");
             } catch (Exception e) {
                 e.printStackTrace();
                 showError("Error opening passenger panel: " + e.getMessage());

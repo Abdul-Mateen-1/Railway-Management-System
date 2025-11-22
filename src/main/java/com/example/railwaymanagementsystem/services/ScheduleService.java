@@ -1,16 +1,15 @@
 package com.example.railwaymanagementsystem.services;
 
 import com.example.railwaymanagementsystem.models.Schedule;
+import javafx.collections.ObservableList;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ScheduleService {
     private final BackendRepository repo = BackendRepository.getInstance();
 
-    public List<Schedule> getSchedules() {
-        return repo.getSchedules().stream().collect(Collectors.toList());
+    public ObservableList<Schedule> getSchedules() {
+        return repo.getSchedules();
     }
 
     public Optional<Schedule> getScheduleForTrain(String trainNumber) {
@@ -25,5 +24,9 @@ public class ScheduleService {
 
     public void removeSchedule(Schedule schedule) {
         repo.removeSchedule(schedule);
+    }
+
+    public boolean updateSchedule(Schedule schedule) {
+        return repo.updateSchedule(schedule);
     }
 }

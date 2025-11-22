@@ -1,7 +1,7 @@
 package com.example.railwaymanagementsystem.controllers;
 
 import com.example.railwaymanagementsystem.models.User;
-import javafx.collections.FXCollections;
+import com.example.railwaymanagementsystem.services.BackendRepository;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -20,6 +20,7 @@ public class UserManagementController {
     @FXML private TableView<User> userTable;
     @FXML private Label countLabel;
 
+    private final BackendRepository repo = BackendRepository.getInstance();
     private ObservableList<User> userData;
     private FilteredList<User> filteredData;
 
@@ -34,32 +35,15 @@ public class UserManagementController {
     }
 
     private void initializeData() {
-        userData = FXCollections.observableArrayList(
-                createUser("1", "Ahmed Khan", "ahmed.khan@example.com", "+92 300 1234567", "Admin"),
-                createUser("2", "Fatima Ali", "fatima.ali@example.com", "+92 301 2345678", "Passenger"),
-                createUser("3", "Hassan Raza", "hassan.raza@example.com", "+92 302 3456789", "Passenger"),
-                createUser("4", "Ayesha Malik", "ayesha.malik@example.com", "+92 303 4567890", "Passenger"),
-                createUser("5", "Usman Sheikh", "usman.sheikh@example.com", "+92 304 5678901", "Admin"),
-                createUser("6", "Zainab Hussain", "zainab.hussain@example.com", "+92 305 6789012", "Passenger"),
-                createUser("7", "Ali Akbar", "ali.akbar@example.com", "+92 306 7890123", "Passenger"),
-                createUser("8", "Mariam Shahid", "mariam.shahid@example.com", "+92 307 8901234", "Passenger"),
-                createUser("9", "Bilal Ahmad", "bilal.ahmad@example.com", "+92 308 9012345", "Admin"),
-                createUser("10", "Sana Tariq", "sana.tariq@example.com", "+92 309 0123456", "Passenger")
-        );
-
+        userData = repo.getUsers();
         filteredData = new FilteredList<>(userData, p -> true);
         userTable.setItems(filteredData);
         updateCountLabel();
-    }
 
-    private User createUser(String id, String name, String email, String phone, String role) {
-        User user = new User();
-        user.setId(id);
-        user.setName(name);
-        user.setEmail(email);
-        user.setPhone(phone);
-        user.setRole(role);
-        return user;
+        // Add a listener to the underlying data to update the count
+        userData.addListener((javafx.collections.ListChangeListener.Change<? extends User> c) -> {
+            updateCountLabel();
+        });
     }
 
     private void setupTable() {
@@ -67,6 +51,7 @@ public class UserManagementController {
         TableColumn<User, String> statusCol = new TableColumn<>("Status");
         statusCol.setPrefWidth(100);
         statusCol.setCellValueFactory(cellData -> {
+            // This is a placeholder. You might want a real status property on your User model.
             return new javafx.beans.property.SimpleStringProperty("Active");
         });
 
@@ -114,14 +99,18 @@ public class UserManagementController {
 
     private void applyFilters() {
         filteredData.setPredicate(user -> {
-            String searchText = searchField.getText().toLowerCase();
+            String searchText = searchField.getText() != null ? searchField.getText().toLowerCase() : "";
             boolean matchesSearch = searchText.isEmpty() ||
-                    user.getName().toLowerCase().contains(searchText) ||
-                    user.getEmail().toLowerCase().contains(searchText);
+                    (user.getName() != null && user.getName().toLowerCase().contains(searchText)) ||
+                    (user.getEmail() != null && user.getEmail().toLowerCase().contains(searchText));
 
             String roleFilter = roleFilterCombo.getValue();
             boolean matchesRole = "All Roles".equals(roleFilter) ||
-                    user.getRole().equals(roleFilter);
+                    (user.getRole() != null && user.getRole().equals(roleFilter));
+
+            // Placeholder for status filter
+            // String statusFilter = statusFilterCombo.getValue();
+            // boolean matchesStatus = "All Status".equals(statusFilter) || "Active".equals(statusFilter);
 
             return matchesSearch && matchesRole;
         });
@@ -130,27 +119,34 @@ public class UserManagementController {
     }
 
     private void updateCountLabel() {
-        countLabel.setText("Showing " + filteredData.size() + " users");
+        countLabel.setText(String.format("Showing %d of %d users",
+                filteredData.size(), userData.size()));
     }
 
     @FXML
     private void handleAddUser() {
+        // This is a placeholder. A proper "add user" dialog should be implemented.
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Add User");
-        dialog.setHeaderText("Add a new user");
+        dialog.setHeaderText("Add a new user (demo)");
         dialog.setContentText("User Name:");
 
         dialog.showAndWait().ifPresent(name -> {
-            String id = String.valueOf(userData.size() + 1);
-            User newUser = createUser(id, name, name.toLowerCase().replace(" ", ".") + "@example.com",
-                    "+92 300 0000000", "Passenger");
-            userData.add(newUser);
-            updateCountLabel();
+            User newUser = new User(
+                    repo.nextUserId(),
+                    name,
+                    name.toLowerCase().replace(" ", ".") + "@example.com",
+                    "+92 300 0000000",
+                    "Passenger",
+                    "password" // Default password for demo
+            );
+            repo.addUser(newUser);
             showSuccess("User added successfully!");
         });
     }
 
     private void handleEditUser(User user) {
+        // This is a placeholder. A proper "edit user" dialog should be implemented.
         TextInputDialog dialog = new TextInputDialog(user.getName());
         dialog.setTitle("Edit User");
         dialog.setHeaderText("Edit user: " + user.getEmail());
@@ -158,6 +154,7 @@ public class UserManagementController {
 
         dialog.showAndWait().ifPresent(name -> {
             user.setName(name);
+            repo.updateUser(user);
             userTable.refresh();
             showSuccess("User updated successfully!");
         });
@@ -171,12 +168,15 @@ public class UserManagementController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+                // This needs a proper implementation in the backend
+                // For now, we remove from the observable list
                 userData.remove(user);
-                updateCountLabel();
                 showSuccess("User deleted successfully!");
             }
         });
     }
+
+
 
     private void showSuccess(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

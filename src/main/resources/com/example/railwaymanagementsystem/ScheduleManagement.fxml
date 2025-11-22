@@ -140,8 +140,6 @@
                         <PropertyValueFactory property="status"/>
                     </cellValueFactory>
                 </TableColumn>
-
-                <TableColumn text="Actions" prefWidth="120"/>
             </columns>
         </TableView>
     </VBox>
