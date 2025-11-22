@@ -1,8 +1,11 @@
 package com.example.railwaymanagementsystem.controllers;
 
 import com.example.railwaymanagementsystem.models.Booking;
+<<<<<<< HEAD
 import com.example.railwaymanagementsystem.services.AppSession;
 import com.example.railwaymanagementsystem.services.BackendService;
+=======
+>>>>>>> 1d6f09b6bebb19db100a8e2b6fdd7dc914d8eec9
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,14 +14,18 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+<<<<<<< HEAD
 import java.util.List;
 import java.util.stream.Collectors;
+=======
+>>>>>>> 1d6f09b6bebb19db100a8e2b6fdd7dc914d8eec9
 
 /**
  * Controller for Cancel Ticket Screen
  */
 public class CancelTicketController {
 
+<<<<<<< HEAD
     @FXML private TableView<Booking> bookingsTable;
     
     private ObservableList<Booking> bookingsData;
@@ -83,6 +90,39 @@ public class CancelTicketController {
             String.format("PKR %,.0f", data.getValue().getTotalAmount())));
         
         // Actions Column
+=======
+    @FXML private TextField pnrField;
+    @FXML private TableView<Booking> bookingsTable;
+
+    private ObservableList<Booking> bookingsData;
+
+    @FXML
+    private void initialize() {
+        initializeData();
+        setupTable();
+    }
+
+    private void initializeData() {
+        bookingsData = FXCollections.observableArrayList(
+                createBooking("PNR123456", "1UP", "Karachi Express", "Karachi", "Lahore",
+                        LocalDate.now().plusDays(5), 2, 5000.0),
+                createBooking("PNR789012", "2DN", "Lahore Express", "Lahore", "Karachi",
+                        LocalDate.now().plusDays(10), 1, 3000.0),
+                createBooking("PNR345678", "3UP", "Green Line", "Islamabad", "Multan",
+                        LocalDate.now().plusDays(3), 3, 6600.0)
+        );
+
+        bookingsTable.setItems(bookingsData);
+    }
+
+    private Booking createBooking(String id, String trainNum, String trainName,
+                                  String from, String to, LocalDate date, int seats, double amount) {
+        return new Booking(id, "USER001", trainNum, trainNum, trainName,
+                from, to, date, seats, "Economy", amount, "Confirmed", LocalDateTime.now());
+    }
+
+    private void setupTable() {
+>>>>>>> 1d6f09b6bebb19db100a8e2b6fdd7dc914d8eec9
         TableColumn<Booking, Void> actionsCol = new TableColumn<>("Actions");
         actionsCol.setPrefWidth(120);
 
@@ -108,10 +148,40 @@ public class CancelTicketController {
             }
         });
 
+<<<<<<< HEAD
         bookingsTable.getColumns().addAll(pnrCol, trainCol, dateCol, routeCol, seatsCol, amountCol, actionsCol);
     }
 
 
+=======
+        bookingsTable.getColumns().add(actionsCol);
+    }
+
+    @FXML
+    private void handleSearchPNR() {
+        String pnr = pnrField.getText().trim();
+
+        if (pnr.isEmpty()) {
+            showError("Please enter a PNR");
+            return;
+        }
+
+        // Search in bookings
+        boolean found = false;
+        for (Booking booking : bookingsData) {
+            if (booking.getId().equalsIgnoreCase(pnr)) {
+                bookingsTable.getSelectionModel().select(booking);
+                bookingsTable.scrollTo(booking);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            showError("PNR not found");
+        }
+    }
+>>>>>>> 1d6f09b6bebb19db100a8e2b6fdd7dc914d8eec9
 
     private void handleCancelBooking(Booking booking) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -128,6 +198,7 @@ public class CancelTicketController {
 
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+<<<<<<< HEAD
                 boolean success = backend.cancelBooking(booking.getId());
                 if (success) {
                     bookingsData.remove(booking);
@@ -137,6 +208,12 @@ public class CancelTicketController {
                 } else {
                     showError("Failed to cancel booking. Please try again.");
                 }
+=======
+                bookingsData.remove(booking);
+                showSuccess("Booking cancelled successfully!\n\n" +
+                        "Refund of PKR " + String.format("%,.0f", booking.getTotalAmount() * 0.8) +
+                        " will be processed in 3-5 business days.");
+>>>>>>> 1d6f09b6bebb19db100a8e2b6fdd7dc914d8eec9
             }
         });
     }
