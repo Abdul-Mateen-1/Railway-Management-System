@@ -51,9 +51,9 @@ public class AdminPanelController {
         loadContent("Settings.fxml");
     }
 
-    @FXML
     private final AppSession session = AppSession.getInstance();
 
+    @FXML
     private void handleLogout() {
         try {
             session.clear();

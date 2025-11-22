@@ -9,7 +9,7 @@
             styleClass="root-container">
 
     <center>
-        <VBox alignment="CENTER" spacing="40" maxWidth="800">
+        <VBox alignment="CENTER" spacing="40">
             <!-- Header -->
             <VBox alignment="CENTER" spacing="15">
                 <!-- Train Icon -->
@@ -33,27 +33,6 @@
                             <Label text="👤" styleClass="icon-medium"/>
                         </StackPane>
                         <Label text="Passenger" styleClass="role-title"/>
-                        <Label text="Book tickets and manage your travel"
-                               styleClass="role-description" wrapText="true" textAlignment="CENTER"/>
-                    </VBox>
-
-                    <VBox spacing="8" styleClass="features-list">
-                        <HBox spacing="8">
-                            <Label text="✓" styleClass="feature-check"/>
-                            <Label text="Book and manage train tickets" styleClass="feature-text" wrapText="true"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="✓" styleClass="feature-check"/>
-                            <Label text="View train schedules and status" styleClass="feature-text" wrapText="true"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="✓" styleClass="feature-check"/>
-                            <Label text="Track payment history" styleClass="feature-text" wrapText="true"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="✓" styleClass="feature-check"/>
-                            <Label text="Receive travel notifications" styleClass="feature-text" wrapText="true"/>
-                        </HBox>
                     </VBox>
 
                     <Button text="Continue as Passenger" styleClass="primary-button"
@@ -68,27 +47,6 @@
                             <Label text="🛡️" styleClass="icon-medium"/>
                         </StackPane>
                         <Label text="Administrator" styleClass="role-title"/>
-                        <Label text="Manage railway operations"
-                               styleClass="role-description" wrapText="true" textAlignment="CENTER"/>
-                    </VBox>
-
-                    <VBox spacing="8" styleClass="features-list">
-                        <HBox spacing="8">
-                            <Label text="✓" styleClass="feature-check"/>
-                            <Label text="Manage trains and schedules" styleClass="feature-text" wrapText="true"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="✓" styleClass="feature-check"/>
-                            <Label text="Monitor system operations" styleClass="feature-text" wrapText="true"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="✓" styleClass="feature-check"/>
-                            <Label text="Generate analytical reports" styleClass="feature-text" wrapText="true"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="✓" styleClass="feature-check"/>
-                            <Label text="Manage users and settings" styleClass="feature-text" wrapText="true"/>
-                        </HBox>
                     </VBox>
 
                     <Button text="Continue as Admin" styleClass="primary-button"

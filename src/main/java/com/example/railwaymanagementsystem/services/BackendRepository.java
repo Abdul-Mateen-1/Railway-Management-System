@@ -10,13 +10,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Repository layer that delegates to DatabaseService for persistent storage
  */
 public final class BackendRepository {
     private static final BackendRepository INSTANCE = new BackendRepository();
-    private final DatabaseService db = DatabaseService.getInstance();
+    private final DatabaseService db = new DatabaseService();
+    private static final Logger LOGGER = Logger.getLogger(BackendRepository.class.getName());
+
 
     private BackendRepository() {}
 
@@ -29,8 +33,7 @@ public final class BackendRepository {
         try {
             return db.findUserByEmail(email);
         } catch (SQLException e) {
-            System.err.println("Error finding user by email: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error finding user by email", e);
             return Optional.empty();
         }
     }
@@ -39,8 +42,7 @@ public final class BackendRepository {
         try {
             return db.findUserById(id);
         } catch (SQLException e) {
-            System.err.println("Error finding user by id: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error finding user by id", e);
             return Optional.empty();
         }
     }
@@ -49,8 +51,7 @@ public final class BackendRepository {
         try {
             return db.getAllUsers();
         } catch (SQLException e) {
-            System.err.println("Error getting users: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error getting users", e);
             return Collections.emptyList();
         }
     }
@@ -59,8 +60,7 @@ public final class BackendRepository {
         try {
             return db.addUser(user);
         } catch (SQLException e) {
-            System.err.println("Error adding user: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error adding user", e);
             return user;
         }
     }
@@ -69,8 +69,7 @@ public final class BackendRepository {
         try {
             return db.updateUser(user);
         } catch (SQLException e) {
-            System.err.println("Error updating user: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error updating user", e);
             return false;
         }
     }
@@ -79,8 +78,7 @@ public final class BackendRepository {
         try {
             return db.emailExists(email, excludeUserId);
         } catch (SQLException e) {
-            System.err.println("Error checking email existence: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error checking email existence", e);
             return false;
         }
     }
@@ -89,8 +87,7 @@ public final class BackendRepository {
         try {
             return db.getNextUserId();
         } catch (SQLException e) {
-            System.err.println("Error getting next user id: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error getting next user id", e);
             return "1";
         }
     }
@@ -100,8 +97,7 @@ public final class BackendRepository {
         try {
             return db.getAllTrains();
         } catch (SQLException e) {
-            System.err.println("Error getting trains: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error getting trains", e);
             return Collections.emptyList();
         }
     }
@@ -110,8 +106,7 @@ public final class BackendRepository {
         try {
             return db.findTrainById(id);
         } catch (SQLException e) {
-            System.err.println("Error finding train by id: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error finding train by id", e);
             return Optional.empty();
         }
     }
@@ -120,8 +115,7 @@ public final class BackendRepository {
         try {
             return db.findTrainByNumber(trainNumber);
         } catch (SQLException e) {
-            System.err.println("Error finding train by number: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error finding train by number", e);
             return Optional.empty();
         }
     }
@@ -130,8 +124,7 @@ public final class BackendRepository {
         try {
             return db.addTrain(train);
         } catch (SQLException e) {
-            System.err.println("Error adding train: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error adding train", e);
             return train;
         }
     }
@@ -140,8 +133,7 @@ public final class BackendRepository {
         try {
             return db.updateTrain(train);
         } catch (SQLException e) {
-            System.err.println("Error updating train: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error updating train", e);
             return false;
         }
     }
@@ -150,8 +142,7 @@ public final class BackendRepository {
         try {
             db.removeTrain(id);
         } catch (SQLException e) {
-            System.err.println("Error removing train: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error removing train", e);
         }
     }
 
@@ -159,8 +150,7 @@ public final class BackendRepository {
         try {
             return db.getNextTrainId();
         } catch (SQLException e) {
-            System.err.println("Error getting next train id: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error getting next train id", e);
             return "1";
         }
     }
@@ -170,8 +160,7 @@ public final class BackendRepository {
         try {
             return db.getAllSchedules();
         } catch (SQLException e) {
-            System.err.println("Error getting schedules: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error getting schedules", e);
             return Collections.emptyList();
         }
     }
@@ -180,8 +169,7 @@ public final class BackendRepository {
         try {
             return db.findScheduleByTrainNumber(trainNumber);
         } catch (SQLException e) {
-            System.err.println("Error finding schedule: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error finding schedule", e);
             return Optional.empty();
         }
     }
@@ -190,8 +178,7 @@ public final class BackendRepository {
         try {
             return db.addSchedule(schedule);
         } catch (SQLException e) {
-            System.err.println("Error adding schedule: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error adding schedule", e);
             return schedule;
         }
     }
@@ -200,8 +187,7 @@ public final class BackendRepository {
         try {
             return db.updateSchedule(schedule);
         } catch (SQLException e) {
-            System.err.println("Error updating schedule: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error updating schedule", e);
             return false;
         }
     }
@@ -210,8 +196,7 @@ public final class BackendRepository {
         try {
             db.removeSchedule(schedule.getId());
         } catch (SQLException e) {
-            System.err.println("Error removing schedule: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error removing schedule", e);
         }
     }
 
@@ -219,8 +204,7 @@ public final class BackendRepository {
         try {
             return db.getNextScheduleId();
         } catch (SQLException e) {
-            System.err.println("Error getting next schedule id: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error getting next schedule id", e);
             return "1";
         }
     }
@@ -230,8 +214,7 @@ public final class BackendRepository {
         try {
             return db.getAllBookings();
         } catch (SQLException e) {
-            System.err.println("Error getting bookings: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error getting bookings", e);
             return Collections.emptyList();
         }
     }
@@ -240,8 +223,7 @@ public final class BackendRepository {
         try {
             return db.findBookingById(id);
         } catch (SQLException e) {
-            System.err.println("Error finding booking: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error finding booking", e);
             return Optional.empty();
         }
     }
@@ -250,8 +232,7 @@ public final class BackendRepository {
         try {
             return db.addBooking(booking);
         } catch (SQLException e) {
-            System.err.println("Error adding booking: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error adding booking", e);
             return booking;
         }
     }
@@ -260,8 +241,7 @@ public final class BackendRepository {
         try {
             return db.updateBooking(booking);
         } catch (SQLException e) {
-            System.err.println("Error updating booking: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error updating booking", e);
             return false;
         }
     }
@@ -270,8 +250,7 @@ public final class BackendRepository {
         try {
             return db.getNextBookingId();
         } catch (SQLException e) {
-            System.err.println("Error getting next booking id: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error getting next booking id", e);
             return "1";
         }
     }

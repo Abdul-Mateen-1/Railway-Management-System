@@ -95,52 +95,46 @@ public class TrainManagementController {
      */
     private void setupFilters() {
         // Search field listener
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            applyFilters();
-        });
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> applyFilters());
 
         // Status filter listener
-        statusFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            applyFilters();
-        });
+        statusFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
 
         // Type filter listener
-        typeFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            applyFilters();
-        });
+        typeFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
 
         // Route filter listener
-        routeFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
-            applyFilters();
-        });
+        routeFilterCombo.valueProperty().addListener((observable, oldValue, newValue) -> applyFilters());
     }
 
     /**
      * Apply all filters
      */
     private void applyFilters() {
+        final String searchText = searchField.getText();
+        final String statusFilter = statusFilterCombo.getValue();
+        final String typeFilter = typeFilterCombo.getValue();
+        final String routeFilter = routeFilterCombo.getValue();
+
         filteredData.setPredicate(train -> {
             // Search filter
-            String searchText = searchField.getText().toLowerCase();
-            boolean matchesSearch = searchText.isEmpty() ||
-                    train.getTrainNumber().toLowerCase().contains(searchText) ||
-                    train.getTrainName().toLowerCase().contains(searchText) ||
-                    train.getRoute().toLowerCase().contains(searchText);
+            final String lowerCaseSearchText = (searchText == null) ? "" : searchText.toLowerCase();
+            boolean matchesSearch = lowerCaseSearchText.isEmpty() ||
+                    (train.getTrainNumber() != null && train.getTrainNumber().toLowerCase().contains(lowerCaseSearchText)) ||
+                    (train.getTrainName() != null && train.getTrainName().toLowerCase().contains(lowerCaseSearchText)) ||
+                    (train.getRoute() != null && train.getRoute().toLowerCase().contains(lowerCaseSearchText));
 
             // Status filter
-            String statusFilter = statusFilterCombo.getValue();
-            boolean matchesStatus = "All Status".equals(statusFilter) ||
-                    train.getStatus().equals(statusFilter);
+            boolean matchesStatus = (statusFilter == null) || "All Status".equals(statusFilter) ||
+                    (train.getStatus() != null && train.getStatus().equals(statusFilter));
 
             // Type filter
-            String typeFilter = typeFilterCombo.getValue();
-            boolean matchesType = "All Types".equals(typeFilter) ||
-                    train.getType().equals(typeFilter);
+            boolean matchesType = (typeFilter == null) || "All Types".equals(typeFilter) ||
+                    (train.getType() != null && train.getType().equals(typeFilter));
 
             // Route filter
-            String routeFilter = routeFilterCombo.getValue();
-            boolean matchesRoute = "All Routes".equals(routeFilter) ||
-                    train.getRoute().contains(routeFilter);
+            boolean matchesRoute = (routeFilter == null) || "All Routes".equals(routeFilter) ||
+                    (train.getRoute() != null && train.getRoute().contains(routeFilter));
 
             return matchesSearch && matchesStatus && matchesType && matchesRoute;
         });
