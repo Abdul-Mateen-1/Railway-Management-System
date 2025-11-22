@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.UserProfileController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT">
+        <VBox>
+            <Label text="My Profile" styleClass="title"/>
+            <Label text="Manage your account information" styleClass="subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- Profile Header -->
+    <VBox styleClass="data-card" spacing="15" alignment="CENTER">
+        <StackPane styleClass="icon-container-large">
+            <Label text="👤" styleClass="icon-large"/>
+        </StackPane>
+        <Label fx:id="userNameLabel" text="Ahmed Khan" styleClass="role-title"/>
+        <Label fx:id="userEmailLabel" text="ahmed.khan@example.com" styleClass="role-description"/>
+    </VBox>
+
+    <!-- Personal Information -->
+    <VBox styleClass="data-card" spacing="20">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="Personal Information" styleClass="card-title" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="editBtn" text="✏️ Edit" styleClass="secondary-button"
+                    onAction="#handleEdit"/>
+            <Button fx:id="saveBtn" text="💾 Save" styleClass="primary-button"
+                    onAction="#handleSave" visible="false" managed="false"/>
+        </HBox>
+
+        <GridPane hgap="15" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="Full Name" styleClass="field-label"/>
+                <TextField fx:id="nameField" text="Ahmed Khan" editable="false"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="Email Address" styleClass="field-label"/>
+                <TextField fx:id="emailField" text="ahmed.khan@example.com" editable="false"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Phone Number" styleClass="field-label"/>
+                <TextField fx:id="phoneField" text="+92 300 1234567" editable="false"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="CNIC" styleClass="field-label"/>
+                <TextField fx:id="cnicField" text="42101-1234567-1" editable="false"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Label text="Date of Birth" styleClass="field-label"/>
+                <DatePicker fx:id="dobPicker" editable="false" disable="true"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="Gender" styleClass="field-label"/>
+                <ComboBox fx:id="genderCombo" editable="false" disable="true">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Male"/>
+                            <String fx:value="Female"/>
+                            <String fx:value="Other"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Address -->
+    <VBox styleClass="data-card" spacing="15">
+        <Label text="Address" styleClass="card-title"/>
+
+        <VBox spacing="8">
+            <Label text="Street Address" styleClass="field-label"/>
+            <TextField fx:id="addressField" text="123 Main Street, Block A" editable="false"/>
+        </VBox>
+
+        <GridPane hgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="City" styleClass="field-label"/>
+                <TextField fx:id="cityField" text="Karachi" editable="false"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="Postal Code" styleClass="field-label"/>
+                <TextField fx:id="postalCodeField" text="75500" editable="false"/>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Change Password -->
+    <VBox styleClass="data-card" spacing="15">
+        <Label text="Change Password" styleClass="card-title"/>
+
+        <VBox spacing="8">
+            <Label text="Current Password" styleClass="field-label"/>
+            <PasswordField fx:id="currentPasswordField" promptText="Enter current password"/>
+        </VBox>
+
+        <VBox spacing="8">
+            <Label text="New Password" styleClass="field-label"/>
+            <PasswordField fx:id="newPasswordField" promptText="Enter new password"/>
+        </VBox>
+
+        <VBox spacing="8">
+            <Label text="Confirm New Password" styleClass="field-label"/>
+            <PasswordField fx:id="confirmPasswordField" promptText="Confirm new password"/>
+        </VBox>
+
+        <Button text="🔒 Update Password" styleClass="primary-button" maxWidth="250"
+                onAction="#handleChangePassword"/>
+    </VBox>
+
+    <!-- Danger Zone -->
+    <VBox styleClass="data-card" spacing="15" style="-fx-border-color: #dc2626;">
+        <Label text="Danger Zone" styleClass="card-title" style="-fx-text-fill: #dc2626;"/>
+        <HBox spacing="15">
+            <Button text="🗑️ Delete Account" styleClass="destructive-button"
+                    onAction="#handleDeleteAccount"/>
+            <Label text="Once you delete your account, there is no going back."
+                   styleClass="small-text" alignment="CENTER_LEFT"/>
+        </HBox>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

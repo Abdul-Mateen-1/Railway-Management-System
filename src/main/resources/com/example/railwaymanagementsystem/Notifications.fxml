@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.NotificationsController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox HBox.hgrow="ALWAYS">
+            <Label text="Notifications" styleClass="title"/>
+            <Label text="Stay updated with travel alerts and updates" styleClass="subtitle"/>
+        </VBox>
+        <Button text="✓ Mark All as Read" styleClass="secondary-button"
+                onAction="#handleMarkAllRead"/>
+    </HBox>
+
+    <!-- Filters -->
+    <HBox spacing="10">
+        <Button text="All" styleClass="secondary-button" onAction="#showAllNotifications"/>
+        <Button text="Unread" styleClass="secondary-button" onAction="#showUnreadNotifications"/>
+        <Button text="Booking" styleClass="secondary-button" onAction="#showBookingNotifications"/>
+        <Button text="Train Status" styleClass="secondary-button" onAction="#showStatusNotifications"/>
+    </HBox>
+
+    <!-- Notifications List -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+        <VBox spacing="10" fx:id="notificationsList" styleClass="content-area">
+            <!-- Notifications will be added dynamically -->
+        </VBox>
+    </ScrollPane>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.railwaymanagementsystem.controllers.WelcomeController"
+            styleClass="root-container">
+
+    <center>
+        <VBox alignment="CENTER" spacing="40">
+            <!-- Header -->
+            <VBox alignment="CENTER" spacing="15">
+                <!-- Train Icon -->
+                <StackPane styleClass="icon-container-large">
+                    <Label text="🚂" styleClass="icon-large"/>
+                </StackPane>
+
+                <VBox alignment="CENTER" spacing="5">
+                    <Label text="Rail Safar" styleClass="title-main"/>
+                    <Label text="Connecting Cities, Building Futures" styleClass="subtitle"/>
+                </VBox>
+            </VBox>
+
+            <!-- Role Selection Cards -->
+            <HBox spacing="30" alignment="CENTER">
+                <!-- Passenger Card -->
+                <VBox styleClass="role-card" spacing="15" prefWidth="350"
+                      onMouseClicked="#handlePassengerLogin">
+                    <VBox alignment="CENTER" spacing="10">
+                        <StackPane styleClass="icon-container">
+                            <Label text="👤" styleClass="icon-medium"/>
+                        </StackPane>
+                        <Label text="Passenger" styleClass="role-title"/>
+                    </VBox>
+
+                    <Button text="Continue as Passenger" styleClass="primary-button"
+                            onAction="#handlePassengerLogin" maxWidth="Infinity"/>
+                </VBox>
+
+                <!-- Admin Card -->
+                <VBox styleClass="role-card" spacing="15" prefWidth="350"
+                      onMouseClicked="#handleAdminLogin">
+                    <VBox alignment="CENTER" spacing="10">
+                        <StackPane styleClass="icon-container">
+                            <Label text="🛡️" styleClass="icon-medium"/>
+                        </StackPane>
+                        <Label text="Administrator" styleClass="role-title"/>
+                    </VBox>
+
+                    <Button text="Continue as Admin" styleClass="primary-button"
+                            onAction="#handleAdminLogin" maxWidth="Infinity"/>
+                </VBox>
+            </HBox>
+
+            <!-- Footer -->
+            <Label text="Secure and efficient railway management system"
+                   styleClass="footer-text"/>
+        </VBox>
+    </center>
+
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+</BorderPane>

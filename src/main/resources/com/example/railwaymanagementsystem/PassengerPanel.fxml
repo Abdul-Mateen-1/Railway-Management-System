@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.railwaymanagementsystem.controllers.PassengerPanelController">
+
+    <!-- Left Sidebar -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="260" style="-fx-background-color: #1e6b47;">
+            <!-- Sidebar Header -->
+            <VBox styleClass="sidebar-header" spacing="5" style="-fx-padding: 20; -fx-background-color: #1e6b47;">
+                <Label text="🚂 Rail Safar" styleClass="sidebar-title" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <Label text="Passenger Portal" styleClass="sidebar-subtitle" style="-fx-font-size: 14px; -fx-text-fill: #dcfce7;"/>
+            </VBox>
+
+            <!-- Menu Items -->
+            <VBox VBox.vgrow="ALWAYS" spacing="8" style="-fx-padding: 10;">
+                <Button fx:id="btnBookTicket" text="🎫  Book Ticket" styleClass="sidebar-button" onAction="#showBookTicket"
+                        maxWidth="Infinity" style="-fx-background-color: #15803d; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;"
+                        onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+                <Button fx:id="btnViewSchedule" text="📅  View Schedule" styleClass="sidebar-button" onAction="#showViewSchedule"
+                        maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;"
+                        onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+                <Button fx:id="btnCheckStatus" text="🔍  Check Train Status" styleClass="sidebar-button" onAction="#showCheckStatus"
+                        maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;"
+                        onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+                <Button fx:id="btnCancelTicket" text="❌  Cancel Ticket" styleClass="sidebar-button" onAction="#showCancelTicket"
+                        maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;"
+                        onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+                <Button fx:id="btnNotifications" text="🔔  Notifications" styleClass="sidebar-button" onAction="#showNotifications"
+                        maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;"
+                        onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+                <Button fx:id="btnPayment" text="💳  Payment" styleClass="sidebar-button" onAction="#showPayment"
+                        maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;"
+                        onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+                <Button fx:id="btnPaymentHistory" text="📜  Payment History" styleClass="sidebar-button" onAction="#showPaymentHistory"
+                        maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;"
+                        onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+                <Button fx:id="btnProfile" text="👤  User Profile" styleClass="sidebar-button" onAction="#showProfile"
+                        maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand;"
+                        onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+            </VBox>
+
+            <!-- Logout Button -->
+            <Button fx:id="btnLogout" text="🚪  Logout" styleClass="sidebar-button"
+                    onAction="#handleLogout"
+                    maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-alignment: CENTER_LEFT; -fx-padding: 12 16; -fx-font-size: 14px; -fx-border-width: 0; -fx-background-radius: 8; -fx-cursor: hand; -fx-border-color: #22c55e; -fx-border-width: 1 0 0 0;"
+                    onMouseEntered="#onMouseEntered" onMouseExited="#onMouseExited"/>
+        </VBox>
+    </left>
+
+    <!-- Main Content Area -->
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area">
+            <!-- Content will be loaded dynamically here -->
+        </StackPane>
+    </center>
+</BorderPane>

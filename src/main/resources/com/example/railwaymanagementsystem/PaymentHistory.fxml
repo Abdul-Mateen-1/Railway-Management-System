@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.PaymentHistoryController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox HBox.hgrow="ALWAYS">
+            <Label text="Payment History" styleClass="title"/>
+            <Label text="Track all your payment transactions" styleClass="subtitle"/>
+        </VBox>
+        <Button text="📥 Export to PDF" styleClass="secondary-button"
+                onAction="#handleExportPDF"/>
+    </HBox>
+
+    <!-- Summary Cards -->
+    <GridPane hgap="20">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="33.33"/>
+            <ColumnConstraints percentWidth="33.33"/>
+            <ColumnConstraints percentWidth="33.33"/>
+        </columnConstraints>
+
+        <VBox styleClass="data-card" spacing="8" GridPane.columnIndex="0">
+            <Label text="Total Spent" styleClass="card-description"/>
+            <Label fx:id="totalSpentLabel" text="PKR 14,500" styleClass="title"/>
+            <Label text="All time" styleClass="small-text"/>
+        </VBox>
+
+        <VBox styleClass="data-card" spacing="8" GridPane.columnIndex="1">
+            <Label text="This Month" styleClass="card-description"/>
+            <Label fx:id="thisMonthLabel" text="PKR 5,000" styleClass="title"/>
+            <Label text="November 2025" styleClass="small-text"/>
+        </VBox>
+
+        <VBox styleClass="data-card" spacing="8" GridPane.columnIndex="2">
+            <Label text="Total Trips" styleClass="card-description"/>
+            <Label fx:id="totalTripsLabel" text="8" styleClass="title"/>
+            <Label text="Bookings" styleClass="small-text"/>
+        </VBox>
+    </GridPane>
+
+    <!-- Filters -->
+    <HBox spacing="15">
+        <Label text="Filter:" styleClass="field-label" alignment="CENTER_LEFT"/>
+        <ComboBox fx:id="filterCombo">
+            <items>
+                <javafx.collections.FXCollections fx:factory="observableArrayList">
+                    <String fx:value="All Transactions"/>
+                    <String fx:value="This Month"/>
+                    <String fx:value="Last 3 Months"/>
+                    <String fx:value="Last 6 Months"/>
+                </javafx.collections.FXCollections>
+            </items>
+        </ComboBox>
+    </HBox>
+
+    <!-- Payment Table -->
+    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+        <Label text="Transaction History" styleClass="card-title"/>
+
+        <TableView fx:id="paymentTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn text="Date" prefWidth="120"/>
+                <TableColumn text="PNR" prefWidth="120"/>
+                <TableColumn text="Train" prefWidth="150"/>
+                <TableColumn text="Route" prefWidth="200"/>
+                <TableColumn text="Amount" prefWidth="120"/>
+                <TableColumn text="Payment Mode" prefWidth="120"/>
+                <TableColumn text="Status" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

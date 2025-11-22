@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.CancelTicketController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT">
+        <VBox>
+            <Label text="Cancel Ticket" styleClass="title"/>
+            <Label text="Cancel your booked tickets" styleClass="subtitle"/>
+        </VBox>
+    </HBox>
+
+
+
+    <!-- My Bookings -->
+    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+        <Label text="My Active Bookings" styleClass="card-title"/>
+
+        <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn text="PNR" prefWidth="120"/>
+                <TableColumn text="Train" prefWidth="150"/>
+                <TableColumn text="Date" prefWidth="100"/>
+                <TableColumn text="Route" prefWidth="200"/>
+                <TableColumn text="Seats" prefWidth="60"/>
+                <TableColumn text="Amount" prefWidth="100"/>
+                <TableColumn text="Actions" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

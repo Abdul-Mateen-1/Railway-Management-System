@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.ViewScheduleController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT">
+        <VBox>
+            <Label text="View Schedule" styleClass="title"/>
+            <Label text="Browse train schedules and timings" styleClass="subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- Search and Filters -->
+    <VBox styleClass="data-card" spacing="20">
+        <Label text="Search Trains" styleClass="card-title"/>
+
+        <HBox styleClass="input-container" spacing="10">
+            <Label text="🔍" styleClass="input-icon"/>
+            <TextField fx:id="searchField"
+                       promptText="Search by train number or route..."
+                       styleClass="text-field"
+                       HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <GridPane hgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="From Station" styleClass="field-label"/>
+                <ComboBox fx:id="fromStationCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Stations"/>
+                            <String fx:value="Karachi"/>
+                            <String fx:value="Lahore"/>
+                            <String fx:value="Islamabad"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="To Station" styleClass="field-label"/>
+                <ComboBox fx:id="toStationCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="All Stations"/>
+                            <String fx:value="Karachi"/>
+                            <String fx:value="Lahore"/>
+                            <String fx:value="Islamabad"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- Schedule Table -->
+    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="Train Schedules" styleClass="card-title" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="countLabel" text="Showing all trains" styleClass="small-text"/>
+        </HBox>
+
+        <TableView fx:id="scheduleTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn text="Train #" prefWidth="80"/>
+                <TableColumn text="Train Name" prefWidth="150"/>
+                <TableColumn text="Departure" prefWidth="100"/>
+                <TableColumn text="Arrival" prefWidth="100"/>
+                <TableColumn text="Route" prefWidth="250"/>
+                <TableColumn text="Days" prefWidth="120"/>
+                <TableColumn text="Status" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

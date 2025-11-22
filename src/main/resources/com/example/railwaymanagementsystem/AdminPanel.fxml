@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.railwaymanagementsystem.controllers.AdminPanelController">
+
+    <!-- Left Sidebar -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="260" BorderPane.alignment="TOP_LEFT">
+            <!-- Sidebar Header -->
+            <VBox styleClass="sidebar-header" spacing="5">
+                <Label text="🚂 Rail Safar" styleClass="sidebar-title"/>
+                <Label text="Admin Portal" styleClass="sidebar-subtitle"/>
+            </VBox>
+
+            <!-- Menu Items -->
+            <VBox VBox.vgrow="ALWAYS" spacing="0">
+                <Button text="📊  Dashboard" styleClass="sidebar-button"
+                        onAction="#showDashboard"/>
+                <Button text="🚂  Train Management" styleClass="sidebar-button active"
+                        onAction="#showTrainManagement"/>
+                <Button text="📅  Schedule Management" styleClass="sidebar-button"
+                        onAction="#showScheduleManagement"/>
+                <Button text="📈  Generate Reports" styleClass="sidebar-button"
+                        onAction="#showReports"/>
+                <Button text="👥  User Management" styleClass="sidebar-button"
+                        onAction="#showUserManagement"/>
+                <Button text="⚙️  Settings" styleClass="sidebar-button"
+                        onAction="#showSettings"/>
+            </VBox>
+
+            <!-- Logout Button -->
+            <Button text="🚪  Logout" styleClass="sidebar-button"
+                    onAction="#handleLogout"/>
+        </VBox>
+    </left>
+
+    <!-- Main Content Area -->
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area">
+            <!-- Content will be loaded here dynamically -->
+        </StackPane>
+    </center>
+</BorderPane>

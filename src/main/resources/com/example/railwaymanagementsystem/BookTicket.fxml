@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.BookTicketController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT">
+        <VBox>
+            <Label text="Book Ticket" styleClass="title"/>
+            <Label text="Search and book your train tickets" styleClass="subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- Search Form -->
+    <VBox styleClass="data-card" spacing="20">
+        <Label text="Search Trains" styleClass="card-title"/>
+
+        <GridPane hgap="15" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <VBox spacing="8" GridPane.columnIndex="0">
+                <Label text="From Station" styleClass="field-label"/>
+                <ComboBox fx:id="fromStationCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Karachi"/>
+                            <String fx:value="Lahore"/>
+                            <String fx:value="Islamabad"/>
+                            <String fx:value="Rawalpindi"/>
+                            <String fx:value="Peshawar"/>
+                            <String fx:value="Quetta"/>
+                            <String fx:value="Multan"/>
+                            <String fx:value="Faisalabad"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1">
+                <Label text="To Station" styleClass="field-label"/>
+                <ComboBox fx:id="toStationCombo" maxWidth="Infinity">
+                    <items>
+                        <javafx.collections.FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Karachi"/>
+                            <String fx:value="Lahore"/>
+                            <String fx:value="Islamabad"/>
+                            <String fx:value="Rawalpindi"/>
+                            <String fx:value="Peshawar"/>
+                            <String fx:value="Quetta"/>
+                            <String fx:value="Multan"/>
+                            <String fx:value="Faisalabad"/>
+                        </javafx.collections.FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Journey Date" styleClass="field-label"/>
+                <DatePicker fx:id="journeyDatePicker" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Number of Passengers" styleClass="field-label"/>
+                <Spinner fx:id="passengersSpinner" initialValue="1" min="1" max="6" editable="true"/>
+            </VBox>
+        </GridPane>
+
+        <Button text="🔍 Search Trains" styleClass="primary-button" maxWidth="300"
+                onAction="#handleSearchTrains"/>
+    </VBox>
+
+    <!-- Available Trains -->
+    <VBox fx:id="resultsContainer" styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS" visible="false">
+        <Label text="Available Trains" styleClass="card-title"/>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+            <VBox spacing="10" fx:id="trainsList">
+                <!-- Train cards will be added here dynamically -->
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>
