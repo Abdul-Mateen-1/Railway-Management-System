@@ -55,7 +55,8 @@ public class UserDAO {
     public User addUser(User user) throws SQLException {
         String sql = "INSERT INTO users (id, name, email, phone, role, password, cnic, date_of_birth, gender, address, city, postal_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            setUserParameters(pstmt, user);
+            // This helper is safe for INSERT
+            setUserParametersForInsert(pstmt, user);
             pstmt.executeUpdate();
         }
         return user;
@@ -64,8 +65,25 @@ public class UserDAO {
     public boolean updateUser(User user) throws SQLException {
         String sql = "UPDATE users SET name = ?, email = ?, phone = ?, role = ?, password = ?, cnic = ?, date_of_birth = ?, gender = ?, address = ?, city = ?, postal_code = ? WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            setUserParameters(pstmt, user);
+            // Set parameters in the correct order for the UPDATE statement
+            pstmt.setString(1, user.getName());
+            pstmt.setString(2, user.getEmail());
+            pstmt.setString(3, user.getPhone());
+            pstmt.setString(4, user.getRole());
+            pstmt.setString(5, user.getPassword());
+            pstmt.setString(6, user.getCnic());
+            if (user.getDateOfBirth() != null) {
+                pstmt.setDate(7, Date.valueOf(user.getDateOfBirth()));
+            } else {
+                pstmt.setNull(7, Types.DATE);
+            }
+            pstmt.setString(8, user.getGender());
+            pstmt.setString(9, user.getAddress());
+            pstmt.setString(10, user.getCity());
+            pstmt.setString(11, user.getPostalCode());
+            // Set the ID for the WHERE clause
             pstmt.setString(12, user.getId());
+            
             return pstmt.executeUpdate() > 0;
         }
     }
@@ -114,7 +132,7 @@ public class UserDAO {
         return user;
     }
 
-    private void setUserParameters(PreparedStatement pstmt, User user) throws SQLException {
+    private void setUserParametersForInsert(PreparedStatement pstmt, User user) throws SQLException {
         pstmt.setString(1, user.getId());
         pstmt.setString(2, user.getName());
         pstmt.setString(3, user.getEmail());
