@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.TrainPerformanceReportController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Button text="← Go Back" styleClass="ghost-button" onAction="#handleGoBack"/>
+        <VBox>
+            <Label text="Train Performance Report" styleClass="title"/>
+            <Label text="Summary of bookings per train" styleClass="subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- Train Performance Table -->
+    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+        <Label text="Bookings by Train" styleClass="card-title"/>
+        <TableView fx:id="trainPerformanceTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn fx:id="trainNumberColumn" text="Train Number" prefWidth="150"/>
+                <TableColumn fx:id="trainNameColumn" text="Train Name" prefWidth="250"/>
+                <TableColumn fx:id="bookingCountColumn" text="Total Bookings" prefWidth="150"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

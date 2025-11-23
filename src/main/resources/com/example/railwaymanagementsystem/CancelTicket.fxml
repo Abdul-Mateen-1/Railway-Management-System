@@ -2,7 +2,6 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
 <?import javafx.geometry.Insets?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
@@ -16,21 +15,13 @@
         </VBox>
     </HBox>
 
-
-
     <!-- My Bookings -->
     <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
         <Label text="My Active Bookings" styleClass="card-title"/>
 
         <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <!-- Columns will be added programmatically by the controller -->
             <columns>
-                <TableColumn text="PNR" prefWidth="120"/>
-                <TableColumn text="Train" prefWidth="150"/>
-                <TableColumn text="Date" prefWidth="100"/>
-                <TableColumn text="Route" prefWidth="200"/>
-                <TableColumn text="Seats" prefWidth="60"/>
-                <TableColumn text="Amount" prefWidth="100"/>
-                <TableColumn text="Actions" prefWidth="120"/>
             </columns>
         </TableView>
     </VBox>

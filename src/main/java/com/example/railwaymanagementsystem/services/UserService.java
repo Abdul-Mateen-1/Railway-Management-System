@@ -45,6 +45,10 @@ public class UserService {
         return Optional.empty();
     }
 
+    public void removeUser(String id) {
+        repo.removeUser(id);
+    }
+
     public ObservableList<User> getUsers() {
         return repo.getUsers();
     }

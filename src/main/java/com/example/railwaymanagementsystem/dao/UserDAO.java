@@ -70,6 +70,14 @@ public class UserDAO {
         }
     }
 
+    public boolean removeUser(String id) throws SQLException {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, id);
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
     public boolean emailExists(String email, String excludeUserId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM users WHERE LOWER(email) = LOWER(?) AND id != ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {

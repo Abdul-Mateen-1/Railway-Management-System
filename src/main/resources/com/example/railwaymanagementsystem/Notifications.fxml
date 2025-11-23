@@ -17,14 +17,6 @@
                 onAction="#handleMarkAllRead"/>
     </HBox>
 
-    <!-- Filters -->
-    <HBox spacing="10">
-        <Button text="All" styleClass="secondary-button" onAction="#showAllNotifications"/>
-        <Button text="Unread" styleClass="secondary-button" onAction="#showUnreadNotifications"/>
-        <Button text="Booking" styleClass="secondary-button" onAction="#showBookingNotifications"/>
-        <Button text="Train Status" styleClass="secondary-button" onAction="#showStatusNotifications"/>
-    </HBox>
-
     <!-- Notifications List -->
     <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
         <VBox spacing="10" fx:id="notificationsList" styleClass="content-area">

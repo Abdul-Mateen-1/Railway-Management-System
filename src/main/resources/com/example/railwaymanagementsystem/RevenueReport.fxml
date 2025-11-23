@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.railwaymanagementsystem.controllers.RevenueReportController"
+      spacing="25" styleClass="content-area">
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Button text="← Go Back" styleClass="ghost-button" onAction="#handleGoBack"/>
+        <VBox>
+            <Label text="Revenue Report" styleClass="title"/>
+            <Label text="Summary of revenue from confirmed bookings" styleClass="subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- Summary Card -->
+    <VBox styleClass="data-card" spacing="10">
+        <Label text="Total Revenue" styleClass="card-description"/>
+        <Label fx:id="totalRevenueLabel" text="PKR 0" styleClass="title"/>
+        <Label fx:id="totalBookingsLabel" text="From 0 confirmed bookings" styleClass="small-text"/>
+    </VBox>
+
+    <!-- Bookings Table -->
+    <VBox styleClass="data-card" spacing="15" VBox.vgrow="ALWAYS">
+        <Label text="Confirmed Bookings" styleClass="card-title"/>
+        <TableView fx:id="bookingsTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+            <columns>
+                <TableColumn fx:id="pnrColumn" text="PNR" prefWidth="120"/>
+                <TableColumn fx:id="trainColumn" text="Train" prefWidth="150"/>
+                <TableColumn fx:id="dateColumn" text="Travel Date" prefWidth="120"/>
+                <TableColumn fx:id="amountColumn" text="Amount (PKR)" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

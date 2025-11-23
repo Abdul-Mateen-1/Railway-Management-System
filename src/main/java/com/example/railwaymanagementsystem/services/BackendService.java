@@ -1,6 +1,7 @@
 package com.example.railwaymanagementsystem.services;
 
 import com.example.railwaymanagementsystem.models.Booking;
+import com.example.railwaymanagementsystem.models.Notification;
 import com.example.railwaymanagementsystem.models.Schedule;
 import com.example.railwaymanagementsystem.models.Train;
 import com.example.railwaymanagementsystem.models.User;
@@ -19,6 +20,7 @@ public final class BackendService {
     private final TrainService trainService = new TrainService();
     private final ScheduleService scheduleService = new ScheduleService();
     private final BookingService bookingService = new BookingService();
+    private final NotificationService notificationService = new NotificationService();
 
     private BackendService() {}
 
@@ -45,6 +47,10 @@ public final class BackendService {
 
     public Optional<User> updateUser(User updatedUser) {
         return userService.updateUser(updatedUser);
+    }
+
+    public void removeUser(String id) {
+        userService.removeUser(id);
     }
 
     public ObservableList<User> getUsers() {
@@ -112,6 +118,10 @@ public final class BackendService {
         return bookingService.processPayment(bookingId, paymentMethod);
     }
 
+    public boolean updateBooking(Booking booking) {
+        return bookingService.updateBooking(booking);
+    }
+
     public List<Booking> getPendingPaymentsForUser(String userId) {
         return bookingService.getPendingPaymentsForUser(userId);
     }
@@ -120,11 +130,20 @@ public final class BackendService {
         return bookingService.getBookingsForUser(userId);
     }
 
-    public List<Booking> getAllBookings() {
+    public ObservableList<Booking> getAllBookings() {
         return bookingService.getAllBookings();
     }
 
     public Optional<Booking> getBookingById(String bookingId) {
         return bookingService.getBookingById(bookingId);
+    }
+
+    // Notification Service Methods
+    public void createNotification(String userId, String message) {
+        notificationService.createNotification(userId, message);
+    }
+
+    public ObservableList<Notification> getNotificationsForUser(String userId) {
+        return notificationService.getNotificationsForUser(userId);
     }
 }

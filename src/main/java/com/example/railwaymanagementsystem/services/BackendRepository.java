@@ -1,6 +1,7 @@
 package com.example.railwaymanagementsystem.services;
 
 import com.example.railwaymanagementsystem.models.Booking;
+import com.example.railwaymanagementsystem.models.Notification;
 import com.example.railwaymanagementsystem.models.Schedule;
 import com.example.railwaymanagementsystem.models.Train;
 import com.example.railwaymanagementsystem.models.User;
@@ -25,11 +26,15 @@ public final class BackendRepository {
     private final ObservableList<User> users;
     private final ObservableList<Train> trains;
     private final ObservableList<Schedule> schedules;
+    private final ObservableList<Booking> bookings;
+    private final ObservableList<Notification> notifications;
 
     private BackendRepository() {
         users = FXCollections.observableArrayList();
         trains = FXCollections.observableArrayList();
         schedules = FXCollections.observableArrayList();
+        bookings = FXCollections.observableArrayList();
+        notifications = FXCollections.observableArrayList();
         loadInitialData();
     }
 
@@ -38,6 +43,7 @@ public final class BackendRepository {
             users.setAll(db.getAllUsers());
             trains.setAll(db.getAllTrains());
             schedules.setAll(db.getAllSchedules());
+            bookings.setAll(db.getAllBookings());
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error loading initial data", e);
         }
@@ -94,6 +100,16 @@ public final class BackendRepository {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating user", e);
             return false;
+        }
+    }
+
+    public void removeUser(String id) {
+        try {
+            if (db.removeUser(id)) {
+                users.removeIf(user -> user.getId().equals(id));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error removing user", e);
         }
     }
 
@@ -244,27 +260,21 @@ public final class BackendRepository {
     }
 
     // Booking operations
-    public List<Booking> getBookings() {
-        try {
-            return db.getAllBookings();
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error getting bookings", e);
-            return Collections.emptyList();
-        }
+    public ObservableList<Booking> getBookings() {
+        return bookings;
     }
 
     public Optional<Booking> findBookingById(String id) {
-        try {
-            return db.findBookingById(id);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error finding booking", e);
-            return Optional.empty();
-        }
+        return bookings.stream()
+                .filter(booking -> booking.getId().equals(id))
+                .findFirst();
     }
 
     public Booking addBooking(Booking booking) {
         try {
-            return db.addBooking(booking);
+            Booking newBooking = db.addBooking(booking);
+            bookings.add(newBooking);
+            return newBooking;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error adding booking", e);
             return booking;
@@ -273,7 +283,20 @@ public final class BackendRepository {
 
     public boolean updateBooking(Booking booking) {
         try {
-            return db.updateBooking(booking);
+            if (db.updateBooking(booking)) {
+                int index = -1;
+                for (int i = 0; i < bookings.size(); i++) {
+                    if (bookings.get(i).getId().equals(booking.getId())) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    bookings.set(index, booking);
+                }
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating booking", e);
             return false;
@@ -287,5 +310,14 @@ public final class BackendRepository {
             LOGGER.log(Level.SEVERE, "Error getting next booking id", e);
             return "1";
         }
+    }
+
+    // Notification operations
+    public ObservableList<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void addNotification(Notification notification) {
+        notifications.add(0, notification); // Add to the top of the list
     }
 }

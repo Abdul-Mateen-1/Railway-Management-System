@@ -47,6 +47,10 @@ public class DatabaseService {
         return userDAO.updateUser(user);
     }
 
+    public boolean removeUser(String id) throws SQLException {
+        return userDAO.removeUser(id);
+    }
+
     public boolean emailExists(String email, String excludeUserId) throws SQLException {
         return userDAO.emailExists(email, excludeUserId);
     }
